@@ -12,8 +12,8 @@ public class RunTimeSample : MonoBehaviour
 
     private bool withDownTownArea = true;
     private bool rightHand = true;
-
-    private bool isNight = false;
+    // 2025年2月28日20:37:36
+    //private bool isNight = false;
 
     void Awake()
     {
