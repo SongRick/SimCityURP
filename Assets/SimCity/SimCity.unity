@@ -658,7 +658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 2038592831}
-  grid: {fileID: 0}
+  grid: {fileID: 1544297017}
   database: {fileID: 11400000, guid: b20aebe169c311c40bdf91810a709ba7, type: 2}
   gridVisualization: {fileID: 1732859673}
   wrongPlacementClip: {fileID: 8300000, guid: 2bebd0c935e5d904999a87c0edbade82, type: 3}
@@ -1577,6 +1577,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4106051928394979113, guid: e5255d914964c5d4db47d2fbc62f2f22,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106051928394979113, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106051928394979113, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106051928394979113, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1625,6 +1640,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4106051928394979113, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5606265904807719834, guid: e5255d914964c5d4db47d2fbc62f2f22,
         type: 3}
       propertyPath: m_Name
@@ -1635,6 +1655,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8857445364469361603, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8857445364469361603, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 37c8d7adc5bc24945bf6c71b8df35422, type: 2}
+    - target: {fileID: 8857445364469361603, guid: e5255d914964c5d4db47d2fbc62f2f22,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 37c8d7adc5bc24945bf6c71b8df35422, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
