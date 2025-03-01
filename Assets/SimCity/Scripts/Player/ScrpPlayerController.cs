@@ -224,38 +224,38 @@ namespace SimCity.FinalController
         #endregion
 
         #region GUI
-        //void OnGUI()
-        //{
+        void OnGUI()
+        {
 
-        //    GUIStyle labelStyle = new GUIStyle();
-        //    labelStyle.normal.textColor = Color.black;
-        //    labelStyle.fontSize = 50;
-        //    int positionGUIX = Screen.width - 300;
-        //    int positionGUIY = 10;
-        //    // 若未开启debug模式，则不显示所有GUI消息
-        //    if (!_UIInput.DebugModeToggleOn)
-        //        return;
-        //    if (_playerLocomotionInput.FlightModeToggleOn)
-        //    {
-        //        GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "Flight Mode", labelStyle);
-        //    }
-        //    else
-        //    {
-        //        GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "Normal Mode", labelStyle);
-        //    }
-        //    if (_playerLocomotionInput.SprintToggledOn)
-        //    {
-        //        GUI.Label(new Rect(positionGUIX, positionGUIY + 60, 140, 20), "Sprinting", labelStyle);
-        //    }
-        //    if (_UIInput.CursorLockToggledOn)
-        //    {
-        //        GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorLock", labelStyle);
-        //    }
-        //    else
-        //    {
-        //        GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorUnlock", labelStyle);
-        //    }
-        //}
+            GUIStyle labelStyle = new GUIStyle();
+            labelStyle.normal.textColor = Color.black;
+            labelStyle.fontSize = 50;
+            int positionGUIX = Screen.width - 300;
+            int positionGUIY = 10;
+            // 若未开启debug模式，则不显示所有GUI消息
+            if (!_UIInput.DebugModeToggleOn)
+                return;
+            if (_playerLocomotionInput.FlightModeToggleOn)
+            {
+                GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "Flight Mode", labelStyle);
+            }
+            else
+            {
+                GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "Normal Mode", labelStyle);
+            }
+            if (_playerLocomotionInput.SprintToggledOn)
+            {
+                GUI.Label(new Rect(positionGUIX, positionGUIY + 60, 140, 20), "Sprinting", labelStyle);
+            }
+            if (_UIInput.CursorLockToggledOn)
+            {
+                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorLock", labelStyle);
+            }
+            else
+            {
+                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorUnlock", labelStyle);
+            }
+        }
 
         #endregion
     }
