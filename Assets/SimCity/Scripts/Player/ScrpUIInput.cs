@@ -1,51 +1,51 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace SimCity.FinalController
 {
-    // ÉèÖÃ¸Ã½Å±¾µÄÖ´ĞĞË³ĞòÎª -2£¬ÒâÎ¶×ÅËü»á±ÈÄ¬ÈÏË³ĞòµÄ½Å±¾¸üÔçÖ´ĞĞ£¬
-    // ±£Ö¤ÊäÈë´¦ÀíÂß¼­ÄÜÔÚÆäËûÒÀÀµÊäÈëµÄ½Å±¾Ö®Ç°Íê³É
+    // è®¾ç½®è¯¥è„šæœ¬çš„æ‰§è¡Œé¡ºåºä¸º -2ï¼Œæ„å‘³ç€å®ƒä¼šæ¯”é»˜è®¤é¡ºåºçš„è„šæœ¬æ›´æ—©æ‰§è¡Œï¼Œ
+    // ä¿è¯è¾“å…¥å¤„ç†é€»è¾‘èƒ½åœ¨å…¶ä»–ä¾èµ–è¾“å…¥çš„è„šæœ¬ä¹‹å‰å®Œæˆ
     [DefaultExecutionOrder(-3)]
     public class UIInput : MonoBehaviour, PlayerControls.IUIMapActions
     {
         #region Class variables
-        // Íæ¼ÒÊäÈë¿ØÖÆÀàµÄÊµÀı£¬ÓÃÓÚ¹ÜÀíÍæ¼ÒµÄ¸÷ÖÖÊäÈë²Ù×÷£¬
-        // ½èÖúËü¿ÉÒÔ¼àÌıÍæ¼ÒµÄ°´¼ü¡¢Êó±êÒÆ¶¯µÈÊäÈëÊÂ¼ş
+        // ç©å®¶è¾“å…¥æ§åˆ¶ç±»çš„å®ä¾‹ï¼Œç”¨äºç®¡ç†ç©å®¶çš„å„ç§è¾“å…¥æ“ä½œï¼Œ
+        // å€ŸåŠ©å®ƒå¯ä»¥ç›‘å¬ç©å®¶çš„æŒ‰é”®ã€é¼ æ ‡ç§»åŠ¨ç­‰è¾“å…¥äº‹ä»¶
         public PlayerControls PlayerControls { get; private set; }
 
-        // ¹â±êÊÇ·ñËø¶¨
-        // True     ¹â±êËø¶¨£¬¼´Òş²Ø¹â±ê£¬ÇÒÊÓ½Ç¿É±ä
-        // False    ¹â±ê½âËø£¬¼´ÏÔÊ¾¹â±ê£¬ÇÒÊÓ½ÇËø¶¨
-        public bool CursorLockToggledOn { get; private set; } = true;
+        // å…‰æ ‡æ˜¯å¦é”å®š
+        // true     å…‰æ ‡é”å®šï¼Œå³éšè—å…‰æ ‡ï¼Œä¸”è§†è§’å¯å˜
+        // false    å…‰æ ‡è§£é”ï¼Œå³æ˜¾ç¤ºå…‰æ ‡ï¼Œä¸”è§†è§’é”å®š
+        public bool CursorLockToggledOn { get; private set; } = false;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool SelectObjectPressed { get; private set; }
         #endregion
 
 
         #region Startup
-        // µ±¸Ã½Å±¾ÊµÀı±»ÆôÓÃÊ±µ÷ÓÃ£¬ÓÃÓÚ³õÊ¼»¯ÊäÈëÏµÍ³
+        // å½“è¯¥è„šæœ¬å®ä¾‹è¢«å¯ç”¨æ—¶è°ƒç”¨ï¼Œç”¨äºåˆå§‹åŒ–è¾“å…¥ç³»ç»Ÿ
         private void OnEnable()
         {
-            // ´´½¨Ò»¸öĞÂµÄ PlayerControls ÊµÀı£¬ÓÃÓÚ¹ÜÀíÊäÈë²Ù×÷
+            // åˆ›å»ºä¸€ä¸ªæ–°çš„ PlayerControls å®ä¾‹ï¼Œç”¨äºç®¡ç†è¾“å…¥æ“ä½œ
             PlayerControls = new PlayerControls();
-            // ÆôÓÃ PlayerControls ÊµÀı£¬Ê¹Æä¿ªÊ¼¼àÌıÊäÈëÊÂ¼ş
+            // å¯ç”¨ PlayerControls å®ä¾‹ï¼Œä½¿å…¶å¼€å§‹ç›‘å¬è¾“å…¥äº‹ä»¶
             PlayerControls.Enable();
 
-            // ÆôÓÃ PlayerLocomotionMap ¶¯×÷Ó³Éä£¬¸ÃÓ³Éä°üº¬ÁËÒÆ¶¯¡¢ÊÓ½ÇºÍÌøÔ¾µÈÊäÈë¶¯×÷
+            // å¯ç”¨ PlayerLocomotionMap åŠ¨ä½œæ˜ å°„ï¼Œè¯¥æ˜ å°„åŒ…å«äº†ç§»åŠ¨ã€è§†è§’å’Œè·³è·ƒç­‰è¾“å…¥åŠ¨ä½œ
             PlayerControls.UIMap.Enable();
-            // Îª PlayerLocomotionMap ÖĞµÄÊäÈë¶¯×÷ÉèÖÃ»Øµ÷º¯Êı£¬½«Æä°ó¶¨µ½µ±Ç°ÀàµÄÏàÓ¦·½·¨ÉÏ£¬
-            // µ±ÓĞ¶ÔÓ¦ÊäÈëÊÂ¼ş·¢ÉúÊ±£¬»áµ÷ÓÃ°ó¶¨µÄ·½·¨½øĞĞ´¦Àí
+            // ä¸º PlayerLocomotionMap ä¸­çš„è¾“å…¥åŠ¨ä½œè®¾ç½®å›è°ƒå‡½æ•°ï¼Œå°†å…¶ç»‘å®šåˆ°å½“å‰ç±»çš„ç›¸åº”æ–¹æ³•ä¸Šï¼Œ
+            // å½“æœ‰å¯¹åº”è¾“å…¥äº‹ä»¶å‘ç”Ÿæ—¶ï¼Œä¼šè°ƒç”¨ç»‘å®šçš„æ–¹æ³•è¿›è¡Œå¤„ç†
             PlayerControls.UIMap.SetCallbacks(this);
         }
 
-        // µ±¸Ã½Å±¾ÊµÀı±»½ûÓÃÊ±µ÷ÓÃ£¬ÓÃÓÚ¹Ø±ÕÊäÈëÏµÍ³
+        // å½“è¯¥è„šæœ¬å®ä¾‹è¢«ç¦ç”¨æ—¶è°ƒç”¨ï¼Œç”¨äºå…³é—­è¾“å…¥ç³»ç»Ÿ
         private void OnDisable()
         {
-            // ½ûÓÃ PlayerLocomotionMap ¶¯×÷Ó³Éä£¬Í£Ö¹¼àÌı¸ÃÓ³ÉäÏÂµÄÊäÈëÊÂ¼ş
+            // ç¦ç”¨ PlayerLocomotionMap åŠ¨ä½œæ˜ å°„ï¼Œåœæ­¢ç›‘å¬è¯¥æ˜ å°„ä¸‹çš„è¾“å…¥äº‹ä»¶
             PlayerControls.UIMap.Disable();
-            // ÒÆ³ı PlayerLocomotionMap ÖĞµÄÊäÈë¶¯×÷µÄ»Øµ÷º¯Êı£¬±ÜÃâ²»±ØÒªµÄµ÷ÓÃ
+            // ç§»é™¤ PlayerLocomotionMap ä¸­çš„è¾“å…¥åŠ¨ä½œçš„å›è°ƒå‡½æ•°ï¼Œé¿å…ä¸å¿…è¦çš„è°ƒç”¨
             PlayerControls.UIMap.RemoveCallbacks(this);
         }
         #endregion
@@ -53,20 +53,20 @@ namespace SimCity.FinalController
         #region Input Callbacks
         public void OnCursorLock(InputAction.CallbackContext context)
         {
-            // ¼ì²éÊäÈëÊÂ¼şÊÇ·ñÒÑÖ´ĞĞ£¨¼´°´¼ü±»°´ÏÂ£©
+            // æ£€æŸ¥è¾“å…¥äº‹ä»¶æ˜¯å¦å·²æ‰§è¡Œï¼ˆå³æŒ‰é”®è¢«æŒ‰ä¸‹ï¼‰
             if (context.performed)
             {
-                // Èç¹û°´¼ü±»°´ÏÂ£¬ÇĞ»»¹â±êËø¶¨×´Ì¬
+                // å¦‚æœæŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œåˆ‡æ¢å…‰æ ‡é”å®šçŠ¶æ€
                 CursorLockToggledOn = !CursorLockToggledOn;
             }
         }
 
         public void OnDebugMode(InputAction.CallbackContext context)
         {
-            // ¼ì²éÊäÈëÊÂ¼şÊÇ·ñÒÑÖ´ĞĞ£¨¼´°´¼ü±»°´ÏÂ£©
+            // æ£€æŸ¥è¾“å…¥äº‹ä»¶æ˜¯å¦å·²æ‰§è¡Œï¼ˆå³æŒ‰é”®è¢«æŒ‰ä¸‹ï¼‰
             if (context.performed)
             {
-                // Èç¹û°´¼ü±»°´ÏÂ£¬ÇĞ»»debugÄ£Ê½
+                // å¦‚æœæŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œåˆ‡æ¢debugæ¨¡å¼
                 DebugModeToggleOn = !DebugModeToggleOn;
             }
         }
