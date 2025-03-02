@@ -1,9 +1,4 @@
-﻿// 整体简介：
-// 此代码定义了一个名为 ObjectPlacer 的类，它继承自 MonoBehaviour。该类主要负责管理游戏中对象的放置和移除操作。
-// 通过维护一个已放置游戏对象的列表，它能够在指定位置实例化新的游戏对象，并为其分配一个索引，方便后续管理。
-// 同时，也能根据对象的索引从游戏场景中移除相应的游戏对象，确保场景的整洁和资源的合理利用。
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +13,20 @@ public class ObjectPlacer : MonoBehaviour
     // 该方法用于在指定位置放置一个游戏对象，并返回该对象在列表中的索引
     // 参数 prefab: 要放置的游戏对象的预制体
     // 参数 position: 游戏对象要放置的位置
-    public int PlaceObject(GameObject prefab, Vector3 position)
+    // 参数 parent: 指定的父 GameObject，若传入 null 则不设置父对象
+    public int PlaceObject(GameObject prefab, Vector3 position, GameObject parent = null)
     {
         // 实例化传入的预制体，创建一个新的游戏对象
         GameObject newObject = Instantiate(prefab);
 
         // 设置新创建的游戏对象的位置为传入的位置，略高于原位置，避免体积碰撞
         newObject.transform.position = new Vector3(position.x, position.y + 0.01f, position.z);
+
+        // 如果指定了父对象，将新创建的对象设置为该父对象的子对象
+        if (parent != null)
+        {
+            newObject.transform.SetParent(parent.transform);
+        }
 
         // 将新创建的游戏对象添加到已放置游戏对象列表中
         placedGameObjects.Add(newObject);

@@ -29,6 +29,8 @@ public class PlacementState : IBuildingState
     ObjectPlacer objectPlacer;
     // 声音反馈系统，根据不同的操作播放相应的声音
     SoundFeedback soundFeedback;
+    // 指定的新建建筑的父 GameObject，若传入 null 则不设置父对象
+    GameObject parentObject = GameObject.Find("Buildings");
 
     // 构造函数，用于初始化 PlacementState 类的各个参数
     public PlacementState(int iD,
@@ -95,9 +97,9 @@ public class PlacementState : IBuildingState
         }
         // 如果放置有效，播放放置成功的声音
         soundFeedback.PlaySound(SoundType.Place);
-        // 调用物体放置器将所选物体放置到指定的世界坐标位置，并获取该物体的索引
+        // 调用物体放置器将所选物体放置到指定的世界坐标位置，并获取该物体的索引，指定父gameobject
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab,
-            grid.CellToWorld(gridPosition));
+            grid.CellToWorld(gridPosition), parentObject);
 
         // 根据所选物体的 ID 判断是地面物体还是家具物体，选择对应的网格数据
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ?
