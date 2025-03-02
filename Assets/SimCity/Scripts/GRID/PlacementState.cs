@@ -21,10 +21,8 @@ public class PlacementState : IBuildingState
     PreviewSystem previewSystem;
     // 物体数据库，存储了所有可放置物体的详细信息
     ObjectsDatabaseSO database;
-    // 地面数据对象，用于管理地面物体的放置信息
-    GridData floorData;
-    // 家具数据对象，用于管理家具物体的放置信息
-    GridData furnitureData;
+    // 统一使用的网格数据对象，用于管理物体的放置信息
+    GridData gridData;
     // 物体放置器，负责将物体实际放置到场景中
     ObjectPlacer objectPlacer;
     // 声音反馈系统，根据不同的操作播放相应的声音
@@ -37,8 +35,7 @@ public class PlacementState : IBuildingState
                           Grid grid,
                           PreviewSystem previewSystem,
                           ObjectsDatabaseSO database,
-                          GridData floorData,
-                          GridData furnitureData,
+                          GridData gridData,
                           ObjectPlacer objectPlacer,
                           SoundFeedback soundFeedback)
     {
@@ -50,10 +47,8 @@ public class PlacementState : IBuildingState
         this.previewSystem = previewSystem;
         // 保存传入的物体数据库
         this.database = database;
-        // 保存传入的地面数据
-        this.floorData = floorData;
-        // 保存传入的家具数据
-        this.furnitureData = furnitureData;
+        // 保存传入的网格数据
+        this.gridData = gridData;
         // 保存传入的物体放置器
         this.objectPlacer = objectPlacer;
         // 保存传入的声音反馈系统
@@ -97,16 +92,12 @@ public class PlacementState : IBuildingState
         }
         // 如果放置有效，播放放置成功的声音
         soundFeedback.PlaySound(SoundType.Place);
-        // 调用物体放置器将所选物体放置到指定的世界坐标位置，并获取该物体的索引，指定父gameobject
+        // 调用物体放置器将所选物体放置到指定的世界坐标位置，并获取该物体的索引，指定父 gameobject
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab,
             grid.CellToWorld(gridPosition), parentObject);
 
-        // 根据所选物体的 ID 判断是地面物体还是家具物体，选择对应的网格数据
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ?
-            floorData :
-            furnitureData;
-        // 在对应的网格数据中记录该物体的放置信息
-        selectedData.AddObjectAt(gridPosition,
+        // 在网格数据中记录该物体的放置信息
+        gridData.AddObjectAt(gridPosition,
             database.objectsData[selectedObjectIndex].Size,
             database.objectsData[selectedObjectIndex].ID,
             index);
@@ -118,13 +109,8 @@ public class PlacementState : IBuildingState
     // 检查在指定网格位置放置所选物体是否有效的私有方法
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        // 根据所选物体的 ID 判断是地面物体还是家具物体，选择对应的网格数据
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ?
-            floorData :
-            furnitureData;
-
-        // 调用所选网格数据的方法检查是否可以在指定位置放置该物体
-        return selectedData.CanPlaceObejctAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+        // 调用网格数据的方法检查是否可以在指定位置放置该物体
+        return gridData.CanPlaceObejctAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
 
     // 当状态更新时调用的方法，通常在鼠标移动时更新预览位置

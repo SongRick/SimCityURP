@@ -20,11 +20,8 @@ public class RemovingState : IBuildingState
     // 预览系统，用于显示移除操作的预览效果
     PreviewSystem previewSystem;
 
-    // 地面数据管理对象，用于管理地面物体的放置信息
-    GridData floorData;
-
-    // 家具数据管理对象，用于管理家具物体的放置信息
-    GridData furnitureData;
+    // 统一使用的网格数据管理对象，用于管理物体的放置信息
+    GridData gridData;
 
     // 物体放置器，用于实际移除游戏对象
     ObjectPlacer objectPlacer;
@@ -35,8 +32,7 @@ public class RemovingState : IBuildingState
     // 构造函数，初始化移除状态所需的各种对象，并启动移除预览
     public RemovingState(Grid grid,
                          PreviewSystem previewSystem,
-                         GridData floorData,
-                         GridData furnitureData,
+                         GridData gridData,
                          ObjectPlacer objectPlacer,
                          SoundFeedback soundFeedback)
     {
@@ -44,10 +40,8 @@ public class RemovingState : IBuildingState
         this.grid = grid;
         // 将传入的预览系统对象赋值给类的成员变量
         this.previewSystem = previewSystem;
-        // 将传入的地面数据管理对象赋值给类的成员变量
-        this.floorData = floorData;
-        // 将传入的家具数据管理对象赋值给类的成员变量
-        this.furnitureData = furnitureData;
+        // 将传入的网格数据管理对象赋值给类的成员变量
+        this.gridData = gridData;
         // 将传入的物体放置器对象赋值给类的成员变量
         this.objectPlacer = objectPlacer;
         // 将传入的声音反馈系统对象赋值给类的成员变量
@@ -66,41 +60,25 @@ public class RemovingState : IBuildingState
     // 当玩家执行移除操作时调用的方法，处理移除逻辑
     public void OnAction(Vector3Int gridPosition)
     {
-        // 用于存储要移除物体所在的数据管理对象，初始值为 null
-        GridData selectedData = null;
-
-        // 检查家具数据中该网格位置是否有物体
-        if (furnitureData.CanPlaceObejctAt(gridPosition, Vector2Int.one) == false)
-        {
-            // 如果有物体，将家具数据管理对象赋值给 selectedData
-            selectedData = furnitureData;
-        }
-        // 若家具数据中该位置没有物体，检查地面数据中该网格位置是否有物体
-        else if (floorData.CanPlaceObejctAt(gridPosition, Vector2Int.one) == false)
-        {
-            // 如果有物体，将地面数据管理对象赋值给 selectedData
-            selectedData = floorData;
-        }
-
-        // 如果 selectedData 仍为 null，说明该位置没有可移除的物体
-        if (selectedData == null)
-        {
-            // 调用声音反馈系统，播放错误放置的音效
-            soundFeedback.PlaySound(SoundType.wrongPlacement);
-        }
-        else
+        // 检查网格数据中该网格位置是否有物体
+        if (gridData.CanPlaceObejctAt(gridPosition, Vector2Int.one) == false)
         {
             // 调用声音反馈系统，播放移除物体的音效
             soundFeedback.PlaySound(SoundType.Remove);
             // 获取该网格位置物体的索引
-            gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+            gameObjectIndex = gridData.GetRepresentationIndex(gridPosition);
             // 如果索引为 -1，说明该位置没有有效物体，直接返回
             if (gameObjectIndex == -1)
                 return;
             // 调用数据管理对象的方法，移除该网格位置的物体信息
-            selectedData.RemoveObjectAt(gridPosition);
+            gridData.RemoveObjectAt(gridPosition);
             // 调用物体放置器的方法，移除对应的游戏对象
             objectPlacer.RemoveObjectAt(gameObjectIndex);
+        }
+        else
+        {
+            // 调用声音反馈系统，播放错误放置的音效
+            soundFeedback.PlaySound(SoundType.wrongPlacement);
         }
 
         // 将网格坐标转换为世界坐标
@@ -112,9 +90,8 @@ public class RemovingState : IBuildingState
     // 检查所选网格位置是否有可移除物体的方法
     private bool CheckIfSelectionIsValid(Vector3Int gridPosition)
     {
-        // 如果家具数据和地面数据中该位置都可以放置物体，说明没有可移除的物体，返回 false；否则返回 true
-        return !(furnitureData.CanPlaceObejctAt(gridPosition, Vector2Int.one) &&
-            floorData.CanPlaceObejctAt(gridPosition, Vector2Int.one));
+        // 如果该位置可以放置物体，说明没有可移除的物体，返回 false；否则返回 true
+        return !gridData.CanPlaceObejctAt(gridPosition, Vector2Int.one);
     }
 
     // 当网格位置更新时调用的方法，更新预览效果

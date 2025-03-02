@@ -36,8 +36,8 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private AudioSource source;
 
-    // 地面数据和家具数据，用于管理不同类型物体的放置信息
-    private GridData floorData, furnitureData;
+    // 统一使用的网格数据，用于管理物体的放置信息
+    private GridData gridData;
 
     // 可在 Unity 编辑器中设置的预览系统，用于显示物体放置的预览效果
     [SerializeField]
@@ -63,9 +63,8 @@ public class PlacementSystem : MonoBehaviour
         // 初始时禁用网格可视化
         gridVisualization.SetActive(false);
 
-        // 初始化地面数据和家具数据
-        floorData = new();
-        furnitureData = new();
+        // 初始化网格数据
+        gridData = new();
     }
 
     // 开始物体放置操作
@@ -83,8 +82,7 @@ public class PlacementSystem : MonoBehaviour
                                            grid,
                                            preview,
                                            database,
-                                           floorData,
-                                           furnitureData,
+                                           gridData,
                                            objectPlacer,
                                            soundFeedback);
 
@@ -105,7 +103,7 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(true);
 
         // 创建一个新的移除状态对象
-        buildingState = new RemovingState(grid, preview, floorData, furnitureData, objectPlacer, soundFeedback);
+        buildingState = new RemovingState(grid, preview, gridData, objectPlacer, soundFeedback);
 
         // 注册点击事件，点击时调用 PlaceStructure 方法
         inputManager.OnClicked += PlaceStructure;
