@@ -15,7 +15,7 @@ namespace SimCity.FinalController
         // 借助它可以监听玩家的按键、鼠标移动等输入事件
         public PlayerControls PlayerControls { get; private set; }
 
-        // 光标是否锁定，默认解锁
+        // 光标是否锁定
         // true     光标锁定，即隐藏光标，且视角可变
         // false    光标解锁，即显示光标，且视角锁定
         public bool CursorLockToggledOn { get; private set; } = false;
@@ -53,12 +53,12 @@ namespace SimCity.FinalController
         #region Input Callbacks
         public void OnCursorLock(InputAction.CallbackContext context)
         {
-            //// 检查输入事件是否已执行（即按键被按下）
-            //if (context.performed)
-            //{
-            //    // 如果按键被按下，切换光标锁定状态
-            //    CursorLockToggledOn = !CursorLockToggledOn;
-            //}
+            // 检查输入事件是否已执行（即按键被按下）
+            if (context.performed)
+            {
+                // 如果按键被按下，切换光标锁定状态
+                CursorLockToggledOn = !CursorLockToggledOn;
+            }
         }
 
         public void OnDebugMode(InputAction.CallbackContext context)
