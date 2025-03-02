@@ -1,32 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// 此引用语句可能是多余的，因为这里没有实际使用 Unity.VisualScripting.Member 中的静态成员
 using static Unity.VisualScripting.Member;
 
-// PlacementState 类实现了 IBuildingState 接口，用于处理物体放置状态下的相关逻辑
+// 脚本功能说明：
+// 此脚本定义了一个名为 PlacementState 的类，该类实现了 IBuildingState 接口。
+// 其主要功能是处理物体放置状态下的一系列逻辑，包括初始化放置状态、显示放置预览、
+// 检查放置的有效性、执行放置操作、结束放置状态以及更新放置预览等。
+
+// PlacementState 类，用于管理物体放置状态下的相关逻辑
 public class PlacementState : IBuildingState
 {
-    // 所选物体在数据库中的索引，初始化为 -1 表示未选择
+    // 所选物体在数据库中的索引，初始值 -1 表示尚未选择任何物体
     private int selectedObjectIndex = -1;
-    // 所选物体的 ID
+    // 所选物体的唯一标识符
     int ID;
-    // 场景中的网格对象，用于将世界坐标和网格坐标进行转换
+    // 场景中的网格对象，用于进行世界坐标和网格坐标之间的转换
     Grid grid;
-    // 预览系统，用于显示物体放置的预览效果
+    // 预览系统，用于在场景中显示物体放置的预览效果
     PreviewSystem previewSystem;
-    // 物体数据库，存储了所有可放置物体的信息
+    // 物体数据库，存储了所有可放置物体的详细信息
     ObjectsDatabaseSO database;
-    // 地面数据，用于管理地面物体的放置信息
+    // 地面数据对象，用于管理地面物体的放置信息
     GridData floorData;
-    // 家具数据，用于管理家具物体的放置信息
+    // 家具数据对象，用于管理家具物体的放置信息
     GridData furnitureData;
-    // 物体放置器，负责实际放置物体到场景中
+    // 物体放置器，负责将物体实际放置到场景中
     ObjectPlacer objectPlacer;
-    // 声音反馈系统，用于播放不同操作的声音
+    // 声音反馈系统，根据不同的操作播放相应的声音
     SoundFeedback soundFeedback;
 
-    // 构造函数，用于初始化放置状态所需的参数
+    // 构造函数，用于初始化 PlacementState 类的各个参数
     public PlacementState(int iD,
                           Grid grid,
                           PreviewSystem previewSystem,
@@ -36,17 +40,24 @@ public class PlacementState : IBuildingState
                           ObjectPlacer objectPlacer,
                           SoundFeedback soundFeedback)
     {
-        // 赋值所选物体的 ID
+        // 为所选物体的 ID 赋值
         ID = iD;
+        // 保存传入的网格对象
         this.grid = grid;
+        // 保存传入的预览系统
         this.previewSystem = previewSystem;
+        // 保存传入的物体数据库
         this.database = database;
+        // 保存传入的地面数据
         this.floorData = floorData;
+        // 保存传入的家具数据
         this.furnitureData = furnitureData;
+        // 保存传入的物体放置器
         this.objectPlacer = objectPlacer;
+        // 保存传入的声音反馈系统
         this.soundFeedback = soundFeedback;
 
-        // 在数据库中查找指定 ID 的物体索引
+        // 在数据库中查找指定 ID 的物体的索引
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
         // 如果找到了对应的物体
         if (selectedObjectIndex > -1)
@@ -66,11 +77,11 @@ public class PlacementState : IBuildingState
     // 结束当前放置状态时调用的方法
     public void EndState()
     {
-        // 调用预览系统停止显示预览
+        // 调用预览系统停止显示物体放置的预览效果
         previewSystem.StopShowingPreview();
     }
 
-    // 当执行放置操作时调用的方法
+    // 当执行放置操作时调用的方法，参数为网格位置
     public void OnAction(Vector3Int gridPosition)
     {
         // 检查在指定网格位置放置所选物体是否有效
@@ -98,7 +109,7 @@ public class PlacementState : IBuildingState
             database.objectsData[selectedObjectIndex].ID,
             index);
 
-        // 更新预览系统的位置，将其移动到放置位置，并设置为无效状态（这里可能是逻辑需要，根据实际情况）
+        // 更新预览系统的位置，将其移动到放置位置，并设置为无效状态（可能是逻辑需要）
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
     }
 
@@ -114,7 +125,7 @@ public class PlacementState : IBuildingState
         return selectedData.CanPlaceObejctAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
 
-    // 当状态更新时调用的方法，通常是鼠标移动时更新预览位置
+    // 当状态更新时调用的方法，通常在鼠标移动时更新预览位置
     public void UpdateState(Vector3Int gridPosition)
     {
         // 检查在指定网格位置放置所选物体是否有效
