@@ -3,6 +3,7 @@
 // 该系统会处理玩家的输入事件，根据不同的操作（如开始放置、开始移除）创建相应的状态对象，并在游戏过程中更新状态。
 // 同时，它还负责管理网格可视化、预览效果、声音反馈等，确保玩家在进行放置和移除操作时能获得良好的交互体验。
 
+using SimCity.FinalController;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,11 +58,14 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private SoundFeedback soundFeedback;
 
+    private UIInput _UIInput;
+    GameObject targetGameObject;
+
     // 在脚本实例被启用时调用，进行初始化操作
     private void Start()
     {
-        // 初始时禁用网格可视化
-        gridVisualization.SetActive(false);
+        targetGameObject = GameObject.Find("Player");
+        updateEditMode();
 
         // 初始化网格数据
         gridData = new();
@@ -75,7 +79,7 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
 
         // 启用网格可视化
-        gridVisualization.SetActive(true);
+        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
 
         // 创建一个新的放置状态对象
         buildingState = new PlacementState(ID,
@@ -100,7 +104,7 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
 
         // 启用网格可视化
-        gridVisualization.SetActive(true);
+        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
 
         // 创建一个新的移除状态对象
         buildingState = new RemovingState(grid, preview, gridData, objectPlacer, soundFeedback);
@@ -158,6 +162,20 @@ public class PlacementSystem : MonoBehaviour
 
         // 清空当前建筑状态
         buildingState = null;
+    }
+
+    public void updateEditMode()
+    {
+        if (targetGameObject != null)
+        {
+            // 获取目标游戏对象上的 UIInput 组件
+            _UIInput = targetGameObject.GetComponent<UIInput>();
+        }
+        else
+        {
+            Debug.LogError("未找到指定名称的游戏对象");
+        }
+        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
     }
 
     // 每帧更新时调用，处理状态更新

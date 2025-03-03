@@ -21,6 +21,8 @@ namespace SimCity.FinalController
         public bool CursorLockToggledOn { get; private set; } = false;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool SelectObjectPressed { get; private set; }
+
+        private PlacementSystem placementSystem;
         #endregion
 
 
@@ -38,6 +40,13 @@ namespace SimCity.FinalController
             // 为 PlayerLocomotionMap 中的输入动作设置回调函数，将其绑定到当前类的相应方法上，
             // 当有对应输入事件发生时，会调用绑定的方法进行处理
             PlayerControls.UIMap.SetCallbacks(this);
+
+            // 初始化 placementSystem 变量
+            placementSystem = FindObjectOfType<PlacementSystem>();
+            if (placementSystem == null)
+            {
+                Debug.LogError("未找到 PlacementSystem 组件！");
+            }
         }
 
         // 当该脚本实例被禁用时调用，用于关闭输入系统
@@ -58,6 +67,14 @@ namespace SimCity.FinalController
             {
                 // 如果按键被按下，切换光标锁定状态
                 CursorLockToggledOn = !CursorLockToggledOn;
+                if (placementSystem != null)
+                {
+                    placementSystem.updateEditMode();
+                }
+                else
+                {
+                    Debug.LogError("placementSystem 为 null，无法调用 updateEditMode 方法！");
+                }
             }
         }
 
