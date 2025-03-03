@@ -31,7 +31,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         // 检测鼠标左键是否按下
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(1))
             // 如果按下，触发 OnClicked 事件，若有订阅者则执行其相应逻辑
             OnClicked?.Invoke();
         // 检测是否按下 Esc 键

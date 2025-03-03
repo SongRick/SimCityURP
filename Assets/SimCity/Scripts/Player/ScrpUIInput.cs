@@ -18,7 +18,7 @@ namespace SimCity.FinalController
         // 光标是否锁定
         // true     光标锁定，即隐藏光标，且视角可变
         // false    光标解锁，即显示光标，且视角锁定
-        public bool CursorLockToggledOn { get; private set; } = false;
+        public bool CursorLockToggledOn { get; private set; } = true;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool SelectObjectPressed { get; private set; }
 
@@ -99,6 +99,7 @@ namespace SimCity.FinalController
             //    SelectObjectPressed = false;
             //}
         }
+
         #endregion
     }
 }
