@@ -23,6 +23,7 @@ namespace SimCity.FinalController
         public bool SelectObjectPressed { get; private set; }
 
         private PlacementSystem placementSystem;
+        private ScrpUI scrpUI;
         #endregion
 
 
@@ -46,6 +47,12 @@ namespace SimCity.FinalController
             if (placementSystem == null)
             {
                 Debug.LogError("未找到 PlacementSystem 组件！");
+            }
+            // 初始化 scrpUI 变量
+            scrpUI = FindObjectOfType<ScrpUI>();
+            if (scrpUI == null)
+            {
+                Debug.LogError("未找到 scrpUI 组件！");
             }
         }
 
@@ -74,6 +81,14 @@ namespace SimCity.FinalController
                 else
                 {
                     Debug.LogError("placementSystem 为 null，无法调用 updateEditMode 方法！");
+                }
+                if (scrpUI != null)
+                {
+                    scrpUI.updateEditMode(CursorLockToggledOn);
+                }
+                else
+                {
+                    Debug.LogError("scrpUI 为 null，无法调用 updateEditMode 方法！");
                 }
             }
         }
