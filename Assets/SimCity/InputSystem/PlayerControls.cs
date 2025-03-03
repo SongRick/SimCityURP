@@ -229,6 +229,15 @@ namespace SimCity.FinalController
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""dcb7c243-ec6e-416d-98aa-013a2f54f0fd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -264,6 +273,17 @@ namespace SimCity.FinalController
                     ""action"": ""SelectObject"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90ad6865-2bf1-4c6e-86b7-cdb1dcb12b53"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -282,6 +302,7 @@ namespace SimCity.FinalController
             m_UIMap_CursorLock = m_UIMap.FindAction("CursorLock", throwIfNotFound: true);
             m_UIMap_DebugMode = m_UIMap.FindAction("DebugMode", throwIfNotFound: true);
             m_UIMap_SelectObject = m_UIMap.FindAction("SelectObject", throwIfNotFound: true);
+            m_UIMap_MouseSelect = m_UIMap.FindAction("MouseSelect", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -430,6 +451,7 @@ namespace SimCity.FinalController
         private readonly InputAction m_UIMap_CursorLock;
         private readonly InputAction m_UIMap_DebugMode;
         private readonly InputAction m_UIMap_SelectObject;
+        private readonly InputAction m_UIMap_MouseSelect;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -437,6 +459,7 @@ namespace SimCity.FinalController
             public InputAction @CursorLock => m_Wrapper.m_UIMap_CursorLock;
             public InputAction @DebugMode => m_Wrapper.m_UIMap_DebugMode;
             public InputAction @SelectObject => m_Wrapper.m_UIMap_SelectObject;
+            public InputAction @MouseSelect => m_Wrapper.m_UIMap_MouseSelect;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -455,6 +478,9 @@ namespace SimCity.FinalController
                 @SelectObject.started += instance.OnSelectObject;
                 @SelectObject.performed += instance.OnSelectObject;
                 @SelectObject.canceled += instance.OnSelectObject;
+                @MouseSelect.started += instance.OnMouseSelect;
+                @MouseSelect.performed += instance.OnMouseSelect;
+                @MouseSelect.canceled += instance.OnMouseSelect;
             }
 
             private void UnregisterCallbacks(IUIMapActions instance)
@@ -468,6 +494,9 @@ namespace SimCity.FinalController
                 @SelectObject.started -= instance.OnSelectObject;
                 @SelectObject.performed -= instance.OnSelectObject;
                 @SelectObject.canceled -= instance.OnSelectObject;
+                @MouseSelect.started -= instance.OnMouseSelect;
+                @MouseSelect.performed -= instance.OnMouseSelect;
+                @MouseSelect.canceled -= instance.OnMouseSelect;
             }
 
             public void RemoveCallbacks(IUIMapActions instance)
@@ -498,6 +527,7 @@ namespace SimCity.FinalController
             void OnCursorLock(InputAction.CallbackContext context);
             void OnDebugMode(InputAction.CallbackContext context);
             void OnSelectObject(InputAction.CallbackContext context);
+            void OnMouseSelect(InputAction.CallbackContext context);
         }
     }
 }

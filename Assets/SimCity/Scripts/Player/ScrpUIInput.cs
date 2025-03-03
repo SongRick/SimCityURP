@@ -115,6 +115,14 @@ namespace SimCity.FinalController
             //}
         }
 
+        public void OnMouseSelect(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                Debug.Log("click");
+            }
+        }
+
         #endregion
     }
 }
