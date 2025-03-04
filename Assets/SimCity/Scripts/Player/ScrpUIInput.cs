@@ -103,24 +103,9 @@ namespace SimCity.FinalController
             }
         }
 
-        public void OnSelectObject(InputAction.CallbackContext context)
+        public void OnSelect(InputAction.CallbackContext context)
         {
-            //if (context.performed)
-            //{
-            //    SelectObjectPressed = true;
-            //}
-            //else if(context.canceled)
-            //{
-            //    SelectObjectPressed = false;
-            //}
-        }
 
-        public void OnMouseSelect(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                Debug.Log("click");
-            }
         }
 
         #endregion

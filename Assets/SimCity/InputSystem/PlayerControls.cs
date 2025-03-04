@@ -222,18 +222,9 @@ namespace SimCity.FinalController
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SelectObject"",
+                    ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""bb1201b4-17e1-4b94-95fe-33d120df7072"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseSelect"",
-                    ""type"": ""Button"",
-                    ""id"": ""dcb7c243-ec6e-416d-98aa-013a2f54f0fd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -270,18 +261,7 @@ namespace SimCity.FinalController
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SelectObject"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""90ad6865-2bf1-4c6e-86b7-cdb1dcb12b53"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseSelect"",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -301,8 +281,7 @@ namespace SimCity.FinalController
             m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
             m_UIMap_CursorLock = m_UIMap.FindAction("CursorLock", throwIfNotFound: true);
             m_UIMap_DebugMode = m_UIMap.FindAction("DebugMode", throwIfNotFound: true);
-            m_UIMap_SelectObject = m_UIMap.FindAction("SelectObject", throwIfNotFound: true);
-            m_UIMap_MouseSelect = m_UIMap.FindAction("MouseSelect", throwIfNotFound: true);
+            m_UIMap_Select = m_UIMap.FindAction("Select", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -450,16 +429,14 @@ namespace SimCity.FinalController
         private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
         private readonly InputAction m_UIMap_CursorLock;
         private readonly InputAction m_UIMap_DebugMode;
-        private readonly InputAction m_UIMap_SelectObject;
-        private readonly InputAction m_UIMap_MouseSelect;
+        private readonly InputAction m_UIMap_Select;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
             public UIMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @CursorLock => m_Wrapper.m_UIMap_CursorLock;
             public InputAction @DebugMode => m_Wrapper.m_UIMap_DebugMode;
-            public InputAction @SelectObject => m_Wrapper.m_UIMap_SelectObject;
-            public InputAction @MouseSelect => m_Wrapper.m_UIMap_MouseSelect;
+            public InputAction @Select => m_Wrapper.m_UIMap_Select;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -475,12 +452,9 @@ namespace SimCity.FinalController
                 @DebugMode.started += instance.OnDebugMode;
                 @DebugMode.performed += instance.OnDebugMode;
                 @DebugMode.canceled += instance.OnDebugMode;
-                @SelectObject.started += instance.OnSelectObject;
-                @SelectObject.performed += instance.OnSelectObject;
-                @SelectObject.canceled += instance.OnSelectObject;
-                @MouseSelect.started += instance.OnMouseSelect;
-                @MouseSelect.performed += instance.OnMouseSelect;
-                @MouseSelect.canceled += instance.OnMouseSelect;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
             }
 
             private void UnregisterCallbacks(IUIMapActions instance)
@@ -491,12 +465,9 @@ namespace SimCity.FinalController
                 @DebugMode.started -= instance.OnDebugMode;
                 @DebugMode.performed -= instance.OnDebugMode;
                 @DebugMode.canceled -= instance.OnDebugMode;
-                @SelectObject.started -= instance.OnSelectObject;
-                @SelectObject.performed -= instance.OnSelectObject;
-                @SelectObject.canceled -= instance.OnSelectObject;
-                @MouseSelect.started -= instance.OnMouseSelect;
-                @MouseSelect.performed -= instance.OnMouseSelect;
-                @MouseSelect.canceled -= instance.OnMouseSelect;
+                @Select.started -= instance.OnSelect;
+                @Select.performed -= instance.OnSelect;
+                @Select.canceled -= instance.OnSelect;
             }
 
             public void RemoveCallbacks(IUIMapActions instance)
@@ -526,8 +497,7 @@ namespace SimCity.FinalController
         {
             void OnCursorLock(InputAction.CallbackContext context);
             void OnDebugMode(InputAction.CallbackContext context);
-            void OnSelectObject(InputAction.CallbackContext context);
-            void OnMouseSelect(InputAction.CallbackContext context);
+            void OnSelect(InputAction.CallbackContext context);
         }
     }
 }
