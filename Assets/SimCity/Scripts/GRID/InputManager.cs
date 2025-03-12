@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -20,12 +21,10 @@ public class InputManager : MonoBehaviour
         OnExit?.Invoke();
     }
 
-    private void Update()
+    // 新增触发鼠标左键点击事件的方法
+    public void TriggerOnClicked()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            OnClicked?.Invoke();
-        }
+        OnClicked?.Invoke();
     }
 
     public bool IsPointerOverUI()
@@ -35,7 +34,7 @@ public class InputManager : MonoBehaviour
 
     public Vector3 GetSelectedMapPosition()
     {
-        Vector3 mousePos = Input.mousePosition;
+        Vector3 mousePos = Mouse.current.position.ReadValue();
         mousePos.z = sceneCamera.nearClipPlane;
         Ray ray = sceneCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;

@@ -98,7 +98,11 @@ namespace SimCity.FinalController
 
         public void OnSelect(InputAction.CallbackContext context)
         {
-            // 空实现
+            if (context.performed)
+            {
+                // 触发鼠标左键点击事件
+                inputManager.TriggerOnClicked();
+            }
         }
         #endregion
     }
