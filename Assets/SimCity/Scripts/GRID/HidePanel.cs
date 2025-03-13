@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrpUI : MonoBehaviour
+public class HidePanel : MonoBehaviour
 {
     private UIInput _UIInput;
     GameObject targetGameObject;

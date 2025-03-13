@@ -17,7 +17,7 @@ namespace SimCity.FinalController
         public bool SelectObjectPressed { get; private set; }
 
         private PlacementSystem placementSystem;
-        private ScrpUI scrpUI;
+        private HidePanel scrpUI;
         private InputManager inputManager; // 新增InputManager引用
         #endregion
 
@@ -42,7 +42,7 @@ namespace SimCity.FinalController
                 Debug.LogError("未找到PlacementSystem组件！");
             }
 
-            scrpUI = FindObjectOfType<ScrpUI>();
+            scrpUI = FindObjectOfType<HidePanel>();
             if (scrpUI == null)
             {
                 Debug.LogError("未找到scrpUI组件！");
