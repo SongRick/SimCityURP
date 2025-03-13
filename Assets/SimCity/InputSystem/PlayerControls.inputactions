@@ -207,7 +207,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleNewDebugMode",
+                    "name": "ToggleConsoleMode",
                     "type": "Button",
                     "id": "9731af9f-3696-48c1-b3e8-cc1f3460b365",
                     "expectedControlType": "",
@@ -257,7 +257,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleNewDebugMode",
+                    "action": "ToggleConsoleMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

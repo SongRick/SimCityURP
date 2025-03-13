@@ -123,7 +123,7 @@ namespace SimCity.FinalController
                 newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, runSpeed);
 
             // 编辑模式下，自动进入飞行模式
-            if (_UIInput.ToggleEditMode)
+            if (_UIInput.EditModeToggleOn)
             {
                 _playerLocomotionInput.EnableFlightMode();
             }
@@ -192,7 +192,7 @@ namespace SimCity.FinalController
         private void UpdateCameraRotation()
         {
             // 光标锁定（隐藏）
-            if (_UIInput.ToggleCursorLock)
+            if (_UIInput.CursorLockToggleOn)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 // 根据玩家的水平视角输入和相机水平旋转灵敏度，更新相机的水平旋转角度
@@ -232,7 +232,7 @@ namespace SimCity.FinalController
             int positionGUIX = Screen.width - 300;
             int positionGUIY = 10;
             // 若未开启debug模式，则不显示所有GUI消息
-            if (!_UIInput.ToggleDebugMode)
+            if (!_UIInput.DebugModeToggleOn)
                 return;
             if (_playerLocomotionInput.FlightModeToggleOn)
             {
@@ -246,7 +246,7 @@ namespace SimCity.FinalController
             {
                 GUI.Label(new Rect(positionGUIX, positionGUIY + 60, 140, 20), "Sprinting", labelStyle);
             }
-            if (_UIInput.ToggleEditMode)
+            if (_UIInput.EditModeToggleOn)
             {
                 GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "EditMode", labelStyle);
             }

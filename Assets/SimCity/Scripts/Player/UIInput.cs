@@ -10,9 +10,10 @@ namespace SimCity.FinalController
     {
         #region Class variables
         public PlayerControls PlayerControls { get; private set; }
-        public bool ToggleCursorLock { get; private set; } = false;
-        public bool ToggleEditMode { get; private set; } = false;
-        public bool ToggleDebugMode { get; private set; } = true;
+        public bool CursorLockToggleOn { get; private set; } = false;
+        public bool EditModeToggleOn { get; private set; } = false;
+        public bool DebugModeToggleOn { get; private set; } = true;
+        public bool ConsoleModeToggleOn { get; private set; } = false;
         public bool SelectObjectPressed { get; private set; }
 
         private PlacementSystem placementSystem;
@@ -60,16 +61,16 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                bool newState = !ToggleEditMode;
+                bool newState = !EditModeToggleOn;
                 if (!newState)
                 {
                     // 触发OnExit事件
                     inputManager.TriggerOnExit();
                 }
 
-                ToggleEditMode = newState;
+                EditModeToggleOn = newState;
                 // 编辑模式下，应屏幕锁定，CursorLock解锁
-                ToggleCursorLock = !ToggleEditMode;
+                CursorLockToggleOn = !EditModeToggleOn;
 
                 if (placementSystem != null)
                 {
@@ -82,7 +83,7 @@ namespace SimCity.FinalController
 
                 if (scrpUI != null)
                 {
-                    scrpUI.updateEditMode(ToggleEditMode);
+                    scrpUI.updateEditMode(EditModeToggleOn);
                 }
                 else
                 {
@@ -95,7 +96,7 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                ToggleDebugMode = !ToggleDebugMode;
+                DebugModeToggleOn = !DebugModeToggleOn;
             }
         }
 
@@ -108,9 +109,30 @@ namespace SimCity.FinalController
             }
         }
 
-        public void OnToggleNewDebugMode(InputAction.CallbackContext context)
+        public void OnToggleConsoleMode(InputAction.CallbackContext context)
         {
-            Time.timeScale = 0f;
+            if (context.performed)
+            {
+                if (!ConsoleModeToggleOn)
+                {
+                    ConsoleModeToggleOn = !ConsoleModeToggleOn;
+                    Debug.Log("ConsoleModeToggleOn");
+                    Time.timeScale = 0f;
+                    // 视角锁定
+                    CursorLockToggleOn = false;
+                }
+                else
+                {
+                    ConsoleModeToggleOn = !ConsoleModeToggleOn;
+                    Debug.Log("ConsoleModeToggleOff");
+                    Time.timeScale = 1f;
+                    // 退出控制台模式时，视角解锁
+                    CursorLockToggleOn = true;
+                    // 若处于编辑模式，则退出控制台模式时，退出编辑模式
+                    if (EditModeToggleOn)
+                        OnToggleEditMode(context);
+                }
+            }
         }
         #endregion
     }
