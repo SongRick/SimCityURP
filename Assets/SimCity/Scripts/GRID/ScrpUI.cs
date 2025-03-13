@@ -24,7 +24,7 @@ public class ScrpUI : MonoBehaviour
     }
     public void updateEditMode(bool flagEditMode)
     {
-        gameObject.SetActive(!flagEditMode);
+        gameObject.SetActive(flagEditMode);
     }
 
 }

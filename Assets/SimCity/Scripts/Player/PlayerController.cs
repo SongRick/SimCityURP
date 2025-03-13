@@ -122,8 +122,8 @@ namespace SimCity.FinalController
                 // 如果未开启冲刺模式，将水平速度限制在正常最大速度
                 newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, runSpeed);
 
-            // 若光标解锁，则自动进入飞行模式
-            if (!_UIInput.CursorLockToggledOn)
+            // 编辑模式下，自动进入飞行模式
+            if (_UIInput.EditModeToggleOn)
             {
                 _playerLocomotionInput.EnableFlightMode();
             }
@@ -191,10 +191,14 @@ namespace SimCity.FinalController
 
         private void UpdateCameraRotation()
         {
-            // 若光标锁定，则隐藏光标，此时视角可变
-            if (_UIInput.CursorLockToggledOn)
+            // 编辑模式：光标解锁（显示）
+            if (_UIInput.EditModeToggleOn)
             {
-                //光标锁定（隐藏）
+                Cursor.lockState = CursorLockMode.None;
+            }
+            //非编辑模式：光标锁定（隐藏）
+            else
+            {
                 Cursor.lockState = CursorLockMode.Locked;
                 // 根据玩家的水平视角输入和相机水平旋转灵敏度，更新相机的水平旋转角度
                 _cameraRotation.x += lookSenseH * _playerLocomotionInput.LookInput.x;
@@ -205,11 +209,6 @@ namespace SimCity.FinalController
 
                 // 根据玩家的水平视角输入和相机水平旋转灵敏度，更新玩家角色的目标水平旋转角度
                 _playerTargetRotation.x += lookSenseH * _playerLocomotionInput.LookInput.x;
-            }
-            else
-            {
-                //光标解锁（显示）
-                Cursor.lockState = CursorLockMode.None;
 
             }
 
@@ -241,19 +240,19 @@ namespace SimCity.FinalController
             }
             else
             {
-                GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "Normal Mode", labelStyle);
+                GUI.Label(new Rect(positionGUIX, positionGUIY, 140, 20), "NormalMode", labelStyle);
             }
             if (_playerLocomotionInput.SprintToggledOn)
             {
                 GUI.Label(new Rect(positionGUIX, positionGUIY + 60, 140, 20), "Sprinting", labelStyle);
             }
-            if (_UIInput.CursorLockToggledOn)
+            if (_UIInput.EditModeToggleOn)
             {
-                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorLock", labelStyle);
+                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "EditMode", labelStyle);
             }
             else
             {
-                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "CursorUnlock", labelStyle);
+                GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "NonEditMode", labelStyle);
             }
         }
 

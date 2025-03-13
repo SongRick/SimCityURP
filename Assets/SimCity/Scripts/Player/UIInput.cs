@@ -10,7 +10,7 @@ namespace SimCity.FinalController
     {
         #region Class variables
         public PlayerControls PlayerControls { get; private set; }
-        public bool CursorLockToggledOn { get; private set; } = true;
+        public bool EditModeToggleOn { get; private set; } = false;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool SelectObjectPressed { get; private set; }
 
@@ -55,18 +55,18 @@ namespace SimCity.FinalController
         #endregion
 
         #region Input Callbacks
-        public void OnCursorLock(InputAction.CallbackContext context)
+        public void OnEditMode(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
-                bool newState = !CursorLockToggledOn;
-                if (newState)
+                bool newState = !EditModeToggleOn;
+                if (!newState)
                 {
                     // 触发OnExit事件
                     inputManager.TriggerOnExit();
                 }
 
-                CursorLockToggledOn = newState;
+                EditModeToggleOn = newState;
 
                 if (placementSystem != null)
                 {
@@ -79,7 +79,7 @@ namespace SimCity.FinalController
 
                 if (scrpUI != null)
                 {
-                    scrpUI.updateEditMode(CursorLockToggledOn);
+                    scrpUI.updateEditMode(EditModeToggleOn);
                 }
                 else
                 {

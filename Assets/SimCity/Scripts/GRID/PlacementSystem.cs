@@ -50,7 +50,7 @@ public class PlacementSystem : MonoBehaviour
     public void StartPlacement(int ID)
     {
         StopPlacement();
-        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
+        gridVisualization.SetActive(_UIInput.EditModeToggleOn);
         buildingState = new PlacementState(ID, grid, preview, database, gridData, objectPlacer, soundFeedback);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
@@ -59,7 +59,7 @@ public class PlacementSystem : MonoBehaviour
     public void StartRemoving()
     {
         StopPlacement();
-        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
+        gridVisualization.SetActive(_UIInput.EditModeToggleOn);
         buildingState = new RemovingState(grid, preview, gridData, objectPlacer, soundFeedback);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
@@ -102,7 +102,7 @@ public class PlacementSystem : MonoBehaviour
         {
             Debug.LogError("未找到指定名称的游戏对象");
         }
-        gridVisualization.SetActive(!_UIInput.CursorLockToggledOn);
+        gridVisualization.SetActive(_UIInput.EditModeToggleOn);
     }
 
     private void Update()

@@ -204,7 +204,7 @@ namespace SimCity.FinalController
             ""id"": ""f77acb72-2422-4fc3-a40c-901515f640ac"",
             ""actions"": [
                 {
-                    ""name"": ""CursorLock"",
+                    ""name"": ""EditMode"",
                     ""type"": ""Button"",
                     ""id"": ""4e595d3a-bae3-4235-85bb-d3a61bb4a327"",
                     ""expectedControlType"": """",
@@ -239,7 +239,7 @@ namespace SimCity.FinalController
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CursorLock"",
+                    ""action"": ""EditMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -279,7 +279,7 @@ namespace SimCity.FinalController
             m_PlayerLocomotionMap_EnableFlightMode = m_PlayerLocomotionMap.FindAction("EnableFlightMode", throwIfNotFound: true);
             // UIMap
             m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
-            m_UIMap_CursorLock = m_UIMap.FindAction("CursorLock", throwIfNotFound: true);
+            m_UIMap_EditMode = m_UIMap.FindAction("EditMode", throwIfNotFound: true);
             m_UIMap_DebugMode = m_UIMap.FindAction("DebugMode", throwIfNotFound: true);
             m_UIMap_Select = m_UIMap.FindAction("Select", throwIfNotFound: true);
         }
@@ -427,14 +427,14 @@ namespace SimCity.FinalController
         // UIMap
         private readonly InputActionMap m_UIMap;
         private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
-        private readonly InputAction m_UIMap_CursorLock;
+        private readonly InputAction m_UIMap_EditMode;
         private readonly InputAction m_UIMap_DebugMode;
         private readonly InputAction m_UIMap_Select;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
             public UIMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @CursorLock => m_Wrapper.m_UIMap_CursorLock;
+            public InputAction @EditMode => m_Wrapper.m_UIMap_EditMode;
             public InputAction @DebugMode => m_Wrapper.m_UIMap_DebugMode;
             public InputAction @Select => m_Wrapper.m_UIMap_Select;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
@@ -446,9 +446,9 @@ namespace SimCity.FinalController
             {
                 if (instance == null || m_Wrapper.m_UIMapActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_UIMapActionsCallbackInterfaces.Add(instance);
-                @CursorLock.started += instance.OnCursorLock;
-                @CursorLock.performed += instance.OnCursorLock;
-                @CursorLock.canceled += instance.OnCursorLock;
+                @EditMode.started += instance.OnEditMode;
+                @EditMode.performed += instance.OnEditMode;
+                @EditMode.canceled += instance.OnEditMode;
                 @DebugMode.started += instance.OnDebugMode;
                 @DebugMode.performed += instance.OnDebugMode;
                 @DebugMode.canceled += instance.OnDebugMode;
@@ -459,9 +459,9 @@ namespace SimCity.FinalController
 
             private void UnregisterCallbacks(IUIMapActions instance)
             {
-                @CursorLock.started -= instance.OnCursorLock;
-                @CursorLock.performed -= instance.OnCursorLock;
-                @CursorLock.canceled -= instance.OnCursorLock;
+                @EditMode.started -= instance.OnEditMode;
+                @EditMode.performed -= instance.OnEditMode;
+                @EditMode.canceled -= instance.OnEditMode;
                 @DebugMode.started -= instance.OnDebugMode;
                 @DebugMode.performed -= instance.OnDebugMode;
                 @DebugMode.canceled -= instance.OnDebugMode;
@@ -495,7 +495,7 @@ namespace SimCity.FinalController
         }
         public interface IUIMapActions
         {
-            void OnCursorLock(InputAction.CallbackContext context);
+            void OnEditMode(InputAction.CallbackContext context);
             void OnDebugMode(InputAction.CallbackContext context);
             void OnSelect(InputAction.CallbackContext context);
         }

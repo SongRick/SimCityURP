@@ -180,7 +180,7 @@
             "id": "f77acb72-2422-4fc3-a40c-901515f640ac",
             "actions": [
                 {
-                    "name": "CursorLock",
+                    "name": "EditMode",
                     "type": "Button",
                     "id": "4e595d3a-bae3-4235-85bb-d3a61bb4a327",
                     "expectedControlType": "",
@@ -215,7 +215,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CursorLock",
+                    "action": "EditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
