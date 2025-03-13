@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TerrainTools;
+using UnityEngine.Windows;
 
 namespace SimCity.FinalController
 {
@@ -19,6 +21,7 @@ namespace SimCity.FinalController
         private PlacementSystem placementSystem;
         private HidePanel scrpUI;
         private InputManager inputManager; // 新增InputManager引用
+        private ConsoleConcroller consoleConcroller;// 新增ConsoleConcroller引用
         #endregion
 
         #region Startup
@@ -29,6 +32,11 @@ namespace SimCity.FinalController
             if (inputManager == null)
             {
                 Debug.LogError("未找到InputManager组件！");
+            }
+            consoleConcroller = FindObjectOfType<ConsoleConcroller>();
+            if (consoleConcroller == null)
+            {
+                Debug.LogError("未找到ConsoleConcroller组件！");
             }
 
             PlayerControls = new PlayerControls();
@@ -113,6 +121,7 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
+                // 控制台模式
                 if (!ConsoleModeToggleOn)
                 {
                     ConsoleModeToggleOn = !ConsoleModeToggleOn;
@@ -120,7 +129,9 @@ namespace SimCity.FinalController
                     Time.timeScale = 0f;
                     // 视角锁定
                     CursorLockToggleOn = false;
+                    consoleConcroller.input = "";
                 }
+                // 退出控制台模式
                 else
                 {
                     ConsoleModeToggleOn = !ConsoleModeToggleOn;
@@ -131,7 +142,87 @@ namespace SimCity.FinalController
                     // 若处于编辑模式，则退出控制台模式时，退出编辑模式
                     if (EditModeToggleOn)
                         OnToggleEditMode(context);
+                    consoleConcroller.printContent = "";
                 }
+            }
+        }
+
+        public void OnReturn(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                Debug.Log("OnReturn");
+                if (ConsoleModeToggleOn)
+                {
+                    consoleConcroller.HandleInput();
+                    consoleConcroller.input = "";
+                }
+
+            }
+        }
+        #endregion
+
+        #region GUI
+        public void OnGUI()
+        {
+            if (!ConsoleModeToggleOn)
+                return;
+            //定义GUIStyle
+            GUIStyle labelStyle = new GUIStyle();
+            labelStyle.normal.textColor = Color.yellow;
+            labelStyle.fontSize = 40;
+            float widthTextField = 60f;//文本输入框的高度
+            float widthScroll = 400;//滚动条的高度
+            float margin = 5f;//文本输入框或滚动条 与各自box的边距
+            float maxScrollContentRectHeight = 1000;//滚动条内容高度
+
+            //绘制放置文本输入框的box
+            Rect rectBoxForTextField = new Rect(0f, Screen.height - widthTextField, Screen.width, widthTextField);
+            GUI.Box(rectBoxForTextField, "");
+            // 确保输入框可以获得焦点
+            GUI.SetNextControlName("MyTextField");
+            //绘制输入框，与box上下左右的边距均为margin
+            Rect rectTextField = new Rect
+                (rectBoxForTextField.x + margin,
+                rectBoxForTextField.y + margin,
+                rectBoxForTextField.width - 2 * margin,
+                rectBoxForTextField.height - 2 * margin);
+            consoleConcroller.input = GUI.TextField(rectTextField, consoleConcroller.input, labelStyle);
+            // 让输入框自动获得焦点
+            if (Event.current.type == EventType.Repaint)
+            {
+                GUI.FocusControl("MyTextField");
+            }
+
+            //绘制放置滚动条的box
+            Rect rectBoxForScroll = new Rect
+                (rectBoxForTextField.x,
+                rectBoxForTextField.y - widthScroll,
+                Screen.width,
+                widthScroll);
+            GUI.Box(rectBoxForScroll, "");
+            // 绘制滚动条
+            // 第一个参数 rectScroll 表示滚动条的位置和大小
+            // 第二个参数 scrollPosition 表示滚动位置，存储用户滚动的位置信息
+            // 第三个参数 rectScrollView 表示滚动视图中内容的位置（相对于滚动视图而非屏幕原点）和大小
+            Rect rectScroll = new Rect
+                (rectBoxForScroll.x + 3 * margin,// 滚动条内容缩进3*margin，且刚好隐藏右侧的滚动滑块？哈哈
+                rectBoxForScroll.y,
+                rectBoxForScroll.width,
+                rectBoxForScroll.height);
+            Rect rectScrollView = new Rect
+                (margin,
+                margin,
+                0,// 将宽度设为极小值，似乎可以隐藏底部的滚动滑块？
+                maxScrollContentRectHeight);
+            consoleConcroller.scrollPosition = GUI.BeginScrollView(rectScroll, consoleConcroller.scrollPosition, rectScrollView);
+            GUI.Label(rectScrollView, consoleConcroller.printContent, labelStyle);
+            GUI.EndScrollView();
+            // 处理 GUI 事件，确保不拦截鼠标点击事件
+            // 如果不加这行代码，调试时无问题，但是打包生成游戏，运行时会发现，调出控制台时无法单击鼠标以选中对象
+            if (Event.current.type == EventType.MouseDown)
+            {
+                Event.current.Use();
             }
         }
         #endregion

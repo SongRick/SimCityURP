@@ -238,6 +238,15 @@ namespace SimCity.FinalController
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""83693b80-9cbd-4c1e-ae3a-573a56dbfc65"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -284,6 +293,17 @@ namespace SimCity.FinalController
                     ""action"": ""ToggleConsoleMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37c26989-1cfd-4188-a9e9-26f29b1b1c0a"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -303,6 +323,7 @@ namespace SimCity.FinalController
             m_UIMap_ToggleDebugMode = m_UIMap.FindAction("ToggleDebugMode", throwIfNotFound: true);
             m_UIMap_Select = m_UIMap.FindAction("Select", throwIfNotFound: true);
             m_UIMap_ToggleConsoleMode = m_UIMap.FindAction("ToggleConsoleMode", throwIfNotFound: true);
+            m_UIMap_Return = m_UIMap.FindAction("Return", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -452,6 +473,7 @@ namespace SimCity.FinalController
         private readonly InputAction m_UIMap_ToggleDebugMode;
         private readonly InputAction m_UIMap_Select;
         private readonly InputAction m_UIMap_ToggleConsoleMode;
+        private readonly InputAction m_UIMap_Return;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -460,6 +482,7 @@ namespace SimCity.FinalController
             public InputAction @ToggleDebugMode => m_Wrapper.m_UIMap_ToggleDebugMode;
             public InputAction @Select => m_Wrapper.m_UIMap_Select;
             public InputAction @ToggleConsoleMode => m_Wrapper.m_UIMap_ToggleConsoleMode;
+            public InputAction @Return => m_Wrapper.m_UIMap_Return;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -481,6 +504,9 @@ namespace SimCity.FinalController
                 @ToggleConsoleMode.started += instance.OnToggleConsoleMode;
                 @ToggleConsoleMode.performed += instance.OnToggleConsoleMode;
                 @ToggleConsoleMode.canceled += instance.OnToggleConsoleMode;
+                @Return.started += instance.OnReturn;
+                @Return.performed += instance.OnReturn;
+                @Return.canceled += instance.OnReturn;
             }
 
             private void UnregisterCallbacks(IUIMapActions instance)
@@ -497,6 +523,9 @@ namespace SimCity.FinalController
                 @ToggleConsoleMode.started -= instance.OnToggleConsoleMode;
                 @ToggleConsoleMode.performed -= instance.OnToggleConsoleMode;
                 @ToggleConsoleMode.canceled -= instance.OnToggleConsoleMode;
+                @Return.started -= instance.OnReturn;
+                @Return.performed -= instance.OnReturn;
+                @Return.canceled -= instance.OnReturn;
             }
 
             public void RemoveCallbacks(IUIMapActions instance)
@@ -528,6 +557,7 @@ namespace SimCity.FinalController
             void OnToggleDebugMode(InputAction.CallbackContext context);
             void OnSelect(InputAction.CallbackContext context);
             void OnToggleConsoleMode(InputAction.CallbackContext context);
+            void OnReturn(InputAction.CallbackContext context);
         }
     }
 }
