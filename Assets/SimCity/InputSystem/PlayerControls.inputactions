@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EnableFlightMode",
+                    "name": "ToggleFlightMode",
                     "type": "Button",
                     "id": "f125d2e3-7ffd-4c8f-bf68-1b13f641f936",
                     "expectedControlType": "",
@@ -92,7 +92,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EnableFlightMode",
+                    "action": "ToggleFlightMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -180,7 +180,7 @@
             "id": "f77acb72-2422-4fc3-a40c-901515f640ac",
             "actions": [
                 {
-                    "name": "EditMode",
+                    "name": "ToggleEditMode",
                     "type": "Button",
                     "id": "4e595d3a-bae3-4235-85bb-d3a61bb4a327",
                     "expectedControlType": "",
@@ -189,7 +189,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DebugMode",
+                    "name": "ToggleDebugMode",
                     "type": "Button",
                     "id": "296cdd38-f72a-40e5-be1e-7c3a77eb84d3",
                     "expectedControlType": "",
@@ -215,7 +215,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EditMode",
+                    "action": "ToggleEditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -226,7 +226,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "DebugMode",
+                    "action": "ToggleDebugMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

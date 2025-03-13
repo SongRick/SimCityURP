@@ -110,7 +110,7 @@ namespace SimCity.FinalController
         }
 
         // 当玩家进行飞行模式切换输入时调用的回调函数
-        public void OnEnableFlightMode(InputAction.CallbackContext context)
+        public void OnToggleFlightMode(InputAction.CallbackContext context)
         {
             // 切换飞行模式的开启状态
             FlightModeToggleOn = !FlightModeToggleOn;

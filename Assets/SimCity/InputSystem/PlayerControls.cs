@@ -66,7 +66,7 @@ namespace SimCity.FinalController
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EnableFlightMode"",
+                    ""name"": ""ToggleFlightMode"",
                     ""type"": ""Button"",
                     ""id"": ""f125d2e3-7ffd-4c8f-bf68-1b13f641f936"",
                     ""expectedControlType"": """",
@@ -116,7 +116,7 @@ namespace SimCity.FinalController
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""EnableFlightMode"",
+                    ""action"": ""ToggleFlightMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -204,7 +204,7 @@ namespace SimCity.FinalController
             ""id"": ""f77acb72-2422-4fc3-a40c-901515f640ac"",
             ""actions"": [
                 {
-                    ""name"": ""EditMode"",
+                    ""name"": ""ToggleEditMode"",
                     ""type"": ""Button"",
                     ""id"": ""4e595d3a-bae3-4235-85bb-d3a61bb4a327"",
                     ""expectedControlType"": """",
@@ -213,7 +213,7 @@ namespace SimCity.FinalController
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""DebugMode"",
+                    ""name"": ""ToggleDebugMode"",
                     ""type"": ""Button"",
                     ""id"": ""296cdd38-f72a-40e5-be1e-7c3a77eb84d3"",
                     ""expectedControlType"": """",
@@ -239,7 +239,7 @@ namespace SimCity.FinalController
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""EditMode"",
+                    ""action"": ""ToggleEditMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -250,7 +250,7 @@ namespace SimCity.FinalController
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""DebugMode"",
+                    ""action"": ""ToggleDebugMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -276,11 +276,11 @@ namespace SimCity.FinalController
             m_PlayerLocomotionMap_Look = m_PlayerLocomotionMap.FindAction("Look", throwIfNotFound: true);
             m_PlayerLocomotionMap_Jump = m_PlayerLocomotionMap.FindAction("Jump", throwIfNotFound: true);
             m_PlayerLocomotionMap_ToggleSprint = m_PlayerLocomotionMap.FindAction("ToggleSprint", throwIfNotFound: true);
-            m_PlayerLocomotionMap_EnableFlightMode = m_PlayerLocomotionMap.FindAction("EnableFlightMode", throwIfNotFound: true);
+            m_PlayerLocomotionMap_ToggleFlightMode = m_PlayerLocomotionMap.FindAction("ToggleFlightMode", throwIfNotFound: true);
             // UIMap
             m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
-            m_UIMap_EditMode = m_UIMap.FindAction("EditMode", throwIfNotFound: true);
-            m_UIMap_DebugMode = m_UIMap.FindAction("DebugMode", throwIfNotFound: true);
+            m_UIMap_ToggleEditMode = m_UIMap.FindAction("ToggleEditMode", throwIfNotFound: true);
+            m_UIMap_ToggleDebugMode = m_UIMap.FindAction("ToggleDebugMode", throwIfNotFound: true);
             m_UIMap_Select = m_UIMap.FindAction("Select", throwIfNotFound: true);
         }
 
@@ -353,7 +353,7 @@ namespace SimCity.FinalController
         private readonly InputAction m_PlayerLocomotionMap_Look;
         private readonly InputAction m_PlayerLocomotionMap_Jump;
         private readonly InputAction m_PlayerLocomotionMap_ToggleSprint;
-        private readonly InputAction m_PlayerLocomotionMap_EnableFlightMode;
+        private readonly InputAction m_PlayerLocomotionMap_ToggleFlightMode;
         public struct PlayerLocomotionMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -362,7 +362,7 @@ namespace SimCity.FinalController
             public InputAction @Look => m_Wrapper.m_PlayerLocomotionMap_Look;
             public InputAction @Jump => m_Wrapper.m_PlayerLocomotionMap_Jump;
             public InputAction @ToggleSprint => m_Wrapper.m_PlayerLocomotionMap_ToggleSprint;
-            public InputAction @EnableFlightMode => m_Wrapper.m_PlayerLocomotionMap_EnableFlightMode;
+            public InputAction @ToggleFlightMode => m_Wrapper.m_PlayerLocomotionMap_ToggleFlightMode;
             public InputActionMap Get() { return m_Wrapper.m_PlayerLocomotionMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -384,9 +384,9 @@ namespace SimCity.FinalController
                 @ToggleSprint.started += instance.OnToggleSprint;
                 @ToggleSprint.performed += instance.OnToggleSprint;
                 @ToggleSprint.canceled += instance.OnToggleSprint;
-                @EnableFlightMode.started += instance.OnEnableFlightMode;
-                @EnableFlightMode.performed += instance.OnEnableFlightMode;
-                @EnableFlightMode.canceled += instance.OnEnableFlightMode;
+                @ToggleFlightMode.started += instance.OnToggleFlightMode;
+                @ToggleFlightMode.performed += instance.OnToggleFlightMode;
+                @ToggleFlightMode.canceled += instance.OnToggleFlightMode;
             }
 
             private void UnregisterCallbacks(IPlayerLocomotionMapActions instance)
@@ -403,9 +403,9 @@ namespace SimCity.FinalController
                 @ToggleSprint.started -= instance.OnToggleSprint;
                 @ToggleSprint.performed -= instance.OnToggleSprint;
                 @ToggleSprint.canceled -= instance.OnToggleSprint;
-                @EnableFlightMode.started -= instance.OnEnableFlightMode;
-                @EnableFlightMode.performed -= instance.OnEnableFlightMode;
-                @EnableFlightMode.canceled -= instance.OnEnableFlightMode;
+                @ToggleFlightMode.started -= instance.OnToggleFlightMode;
+                @ToggleFlightMode.performed -= instance.OnToggleFlightMode;
+                @ToggleFlightMode.canceled -= instance.OnToggleFlightMode;
             }
 
             public void RemoveCallbacks(IPlayerLocomotionMapActions instance)
@@ -427,15 +427,15 @@ namespace SimCity.FinalController
         // UIMap
         private readonly InputActionMap m_UIMap;
         private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
-        private readonly InputAction m_UIMap_EditMode;
-        private readonly InputAction m_UIMap_DebugMode;
+        private readonly InputAction m_UIMap_ToggleEditMode;
+        private readonly InputAction m_UIMap_ToggleDebugMode;
         private readonly InputAction m_UIMap_Select;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
             public UIMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @EditMode => m_Wrapper.m_UIMap_EditMode;
-            public InputAction @DebugMode => m_Wrapper.m_UIMap_DebugMode;
+            public InputAction @ToggleEditMode => m_Wrapper.m_UIMap_ToggleEditMode;
+            public InputAction @ToggleDebugMode => m_Wrapper.m_UIMap_ToggleDebugMode;
             public InputAction @Select => m_Wrapper.m_UIMap_Select;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
             public void Enable() { Get().Enable(); }
@@ -446,12 +446,12 @@ namespace SimCity.FinalController
             {
                 if (instance == null || m_Wrapper.m_UIMapActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_UIMapActionsCallbackInterfaces.Add(instance);
-                @EditMode.started += instance.OnEditMode;
-                @EditMode.performed += instance.OnEditMode;
-                @EditMode.canceled += instance.OnEditMode;
-                @DebugMode.started += instance.OnDebugMode;
-                @DebugMode.performed += instance.OnDebugMode;
-                @DebugMode.canceled += instance.OnDebugMode;
+                @ToggleEditMode.started += instance.OnToggleEditMode;
+                @ToggleEditMode.performed += instance.OnToggleEditMode;
+                @ToggleEditMode.canceled += instance.OnToggleEditMode;
+                @ToggleDebugMode.started += instance.OnToggleDebugMode;
+                @ToggleDebugMode.performed += instance.OnToggleDebugMode;
+                @ToggleDebugMode.canceled += instance.OnToggleDebugMode;
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
@@ -459,12 +459,12 @@ namespace SimCity.FinalController
 
             private void UnregisterCallbacks(IUIMapActions instance)
             {
-                @EditMode.started -= instance.OnEditMode;
-                @EditMode.performed -= instance.OnEditMode;
-                @EditMode.canceled -= instance.OnEditMode;
-                @DebugMode.started -= instance.OnDebugMode;
-                @DebugMode.performed -= instance.OnDebugMode;
-                @DebugMode.canceled -= instance.OnDebugMode;
+                @ToggleEditMode.started -= instance.OnToggleEditMode;
+                @ToggleEditMode.performed -= instance.OnToggleEditMode;
+                @ToggleEditMode.canceled -= instance.OnToggleEditMode;
+                @ToggleDebugMode.started -= instance.OnToggleDebugMode;
+                @ToggleDebugMode.performed -= instance.OnToggleDebugMode;
+                @ToggleDebugMode.canceled -= instance.OnToggleDebugMode;
                 @Select.started -= instance.OnSelect;
                 @Select.performed -= instance.OnSelect;
                 @Select.canceled -= instance.OnSelect;
@@ -491,12 +491,12 @@ namespace SimCity.FinalController
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnToggleSprint(InputAction.CallbackContext context);
-            void OnEnableFlightMode(InputAction.CallbackContext context);
+            void OnToggleFlightMode(InputAction.CallbackContext context);
         }
         public interface IUIMapActions
         {
-            void OnEditMode(InputAction.CallbackContext context);
-            void OnDebugMode(InputAction.CallbackContext context);
+            void OnToggleEditMode(InputAction.CallbackContext context);
+            void OnToggleDebugMode(InputAction.CallbackContext context);
             void OnSelect(InputAction.CallbackContext context);
         }
     }

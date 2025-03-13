@@ -55,7 +55,7 @@ namespace SimCity.FinalController
         #endregion
 
         #region Input Callbacks
-        public void OnEditMode(InputAction.CallbackContext context)
+        public void OnToggleEditMode(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
@@ -88,7 +88,7 @@ namespace SimCity.FinalController
             }
         }
 
-        public void OnDebugMode(InputAction.CallbackContext context)
+        public void OnToggleDebugMode(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
