@@ -123,7 +123,7 @@ namespace SimCity.FinalController
                 newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, runSpeed);
 
             // 编辑模式下，自动进入飞行模式
-            if (_UIInput.EditModeToggleOn)
+            if (_UIInput.ToggleEditMode)
             {
                 _playerLocomotionInput.EnableFlightMode();
             }
@@ -188,16 +188,11 @@ namespace SimCity.FinalController
         {
             UpdateCameraRotation();
         }
-
+        // 编辑模式：ToggleEditMode==true，ToggleCursorLock==false，视角固定，光标解锁（显示）
         private void UpdateCameraRotation()
         {
-            // 编辑模式：光标解锁（显示）
-            if (_UIInput.EditModeToggleOn)
-            {
-                Cursor.lockState = CursorLockMode.None;
-            }
-            //非编辑模式：光标锁定（隐藏）
-            else
+            // 光标锁定（隐藏）
+            if (_UIInput.ToggleCursorLock)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 // 根据玩家的水平视角输入和相机水平旋转灵敏度，更新相机的水平旋转角度
@@ -210,6 +205,11 @@ namespace SimCity.FinalController
                 // 根据玩家的水平视角输入和相机水平旋转灵敏度，更新玩家角色的目标水平旋转角度
                 _playerTargetRotation.x += lookSenseH * _playerLocomotionInput.LookInput.x;
 
+            }
+            // 光标解锁（显示）
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
             }
 
             // 设置玩家角色的旋转角度，只在 Y 轴上进行旋转，并考虑初始旋转
@@ -232,7 +232,7 @@ namespace SimCity.FinalController
             int positionGUIX = Screen.width - 300;
             int positionGUIY = 10;
             // 若未开启debug模式，则不显示所有GUI消息
-            if (!_UIInput.DebugModeToggleOn)
+            if (!_UIInput.ToggleDebugMode)
                 return;
             if (_playerLocomotionInput.FlightModeToggleOn)
             {
@@ -246,7 +246,7 @@ namespace SimCity.FinalController
             {
                 GUI.Label(new Rect(positionGUIX, positionGUIY + 60, 140, 20), "Sprinting", labelStyle);
             }
-            if (_UIInput.EditModeToggleOn)
+            if (_UIInput.ToggleEditMode)
             {
                 GUI.Label(new Rect(positionGUIX, positionGUIY + 120, 140, 20), "EditMode", labelStyle);
             }

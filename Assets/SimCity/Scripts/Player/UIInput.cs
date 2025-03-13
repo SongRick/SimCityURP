@@ -10,8 +10,9 @@ namespace SimCity.FinalController
     {
         #region Class variables
         public PlayerControls PlayerControls { get; private set; }
-        public bool EditModeToggleOn { get; private set; } = false;
-        public bool DebugModeToggleOn { get; private set; } = true;
+        public bool ToggleCursorLock { get; private set; } = false;
+        public bool ToggleEditMode { get; private set; } = false;
+        public bool ToggleDebugMode { get; private set; } = true;
         public bool SelectObjectPressed { get; private set; }
 
         private PlacementSystem placementSystem;
@@ -59,14 +60,16 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                bool newState = !EditModeToggleOn;
+                bool newState = !ToggleEditMode;
                 if (!newState)
                 {
                     // 触发OnExit事件
                     inputManager.TriggerOnExit();
                 }
 
-                EditModeToggleOn = newState;
+                ToggleEditMode = newState;
+                // 编辑模式下，应屏幕锁定，CursorLock解锁
+                ToggleCursorLock = !ToggleEditMode;
 
                 if (placementSystem != null)
                 {
@@ -79,7 +82,7 @@ namespace SimCity.FinalController
 
                 if (scrpUI != null)
                 {
-                    scrpUI.updateEditMode(EditModeToggleOn);
+                    scrpUI.updateEditMode(ToggleEditMode);
                 }
                 else
                 {
@@ -92,7 +95,7 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                DebugModeToggleOn = !DebugModeToggleOn;
+                ToggleDebugMode = !ToggleDebugMode;
             }
         }
 
@@ -103,6 +106,11 @@ namespace SimCity.FinalController
                 // 触发鼠标左键点击事件
                 inputManager.TriggerOnClicked();
             }
+        }
+
+        public void OnToggleNewDebugMode(InputAction.CallbackContext context)
+        {
+            Time.timeScale = 0f;
         }
         #endregion
     }

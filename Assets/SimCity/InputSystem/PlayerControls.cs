@@ -229,6 +229,15 @@ namespace SimCity.FinalController
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleNewDebugMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""9731af9f-3696-48c1-b3e8-cc1f3460b365"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -264,6 +273,17 @@ namespace SimCity.FinalController
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68c6b79b-b385-4468-a694-546b2369c809"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleNewDebugMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -282,6 +302,7 @@ namespace SimCity.FinalController
             m_UIMap_ToggleEditMode = m_UIMap.FindAction("ToggleEditMode", throwIfNotFound: true);
             m_UIMap_ToggleDebugMode = m_UIMap.FindAction("ToggleDebugMode", throwIfNotFound: true);
             m_UIMap_Select = m_UIMap.FindAction("Select", throwIfNotFound: true);
+            m_UIMap_ToggleNewDebugMode = m_UIMap.FindAction("ToggleNewDebugMode", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -430,6 +451,7 @@ namespace SimCity.FinalController
         private readonly InputAction m_UIMap_ToggleEditMode;
         private readonly InputAction m_UIMap_ToggleDebugMode;
         private readonly InputAction m_UIMap_Select;
+        private readonly InputAction m_UIMap_ToggleNewDebugMode;
         public struct UIMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -437,6 +459,7 @@ namespace SimCity.FinalController
             public InputAction @ToggleEditMode => m_Wrapper.m_UIMap_ToggleEditMode;
             public InputAction @ToggleDebugMode => m_Wrapper.m_UIMap_ToggleDebugMode;
             public InputAction @Select => m_Wrapper.m_UIMap_Select;
+            public InputAction @ToggleNewDebugMode => m_Wrapper.m_UIMap_ToggleNewDebugMode;
             public InputActionMap Get() { return m_Wrapper.m_UIMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -455,6 +478,9 @@ namespace SimCity.FinalController
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @ToggleNewDebugMode.started += instance.OnToggleNewDebugMode;
+                @ToggleNewDebugMode.performed += instance.OnToggleNewDebugMode;
+                @ToggleNewDebugMode.canceled += instance.OnToggleNewDebugMode;
             }
 
             private void UnregisterCallbacks(IUIMapActions instance)
@@ -468,6 +494,9 @@ namespace SimCity.FinalController
                 @Select.started -= instance.OnSelect;
                 @Select.performed -= instance.OnSelect;
                 @Select.canceled -= instance.OnSelect;
+                @ToggleNewDebugMode.started -= instance.OnToggleNewDebugMode;
+                @ToggleNewDebugMode.performed -= instance.OnToggleNewDebugMode;
+                @ToggleNewDebugMode.canceled -= instance.OnToggleNewDebugMode;
             }
 
             public void RemoveCallbacks(IUIMapActions instance)
@@ -498,6 +527,7 @@ namespace SimCity.FinalController
             void OnToggleEditMode(InputAction.CallbackContext context);
             void OnToggleDebugMode(InputAction.CallbackContext context);
             void OnSelect(InputAction.CallbackContext context);
+            void OnToggleNewDebugMode(InputAction.CallbackContext context);
         }
     }
 }
