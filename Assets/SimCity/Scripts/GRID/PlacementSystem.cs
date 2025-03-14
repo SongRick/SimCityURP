@@ -74,6 +74,9 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
         // 根据编辑模式开关激活或禁用网格可视化
         gridVisualization.SetActive(_UIInput.EditModeToggleOn);
+        // select状态，终止后续操作
+        if (ID == -2)
+            return;
         // 创建一个新的放置状态对象
         buildingState = new PlacementState(ID, grid, preview, database, gridData, objectPlacer, soundFeedback);
         // 注册点击事件处理方法
@@ -96,7 +99,6 @@ public class PlacementSystem : MonoBehaviour
         // 注册退出事件处理方法
         inputManager.OnExit += StopPlacement;
     }
-
     // 处理物体放置或移除的方法
     private void PlaceStructure()
     {
@@ -113,9 +115,8 @@ public class PlacementSystem : MonoBehaviour
         // 调用当前建筑状态的操作方法
         buildingState.OnAction(gridPosition);
     }
-
     // 停止当前的放置或移除操作
-    private void StopPlacement()
+    public void StopPlacement()
     {
         // 播放点击音效
         soundFeedback.PlaySound(SoundType.Click);
@@ -137,7 +138,6 @@ public class PlacementSystem : MonoBehaviour
         // 清空当前建筑状态
         buildingState = null;
     }
-
     // 更新编辑模式状态
     public void updateEditMode()
     {
