@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour
     public void TriggerOnClicked()
     {
         OnClicked?.Invoke();
+        Debug.Log("TriggerOnClicked()");
     }
 
     public bool IsPointerOverUI()
