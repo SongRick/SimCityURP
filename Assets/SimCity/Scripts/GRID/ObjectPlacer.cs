@@ -8,7 +8,7 @@ public class ObjectPlacer : MonoBehaviour
 {
     // 可在 Unity 编辑器中设置的序列化字段，用于存储已经放置的游戏对象列表
     [SerializeField]
-    private List<GameObject> placedGameObjects = new();
+    public List<GameObject> placedGameObjects = new();
 
     // 该方法用于在指定位置放置一个游戏对象，并返回该对象在列表中的索引
     // 参数 prefab: 要放置的游戏对象的预制体
