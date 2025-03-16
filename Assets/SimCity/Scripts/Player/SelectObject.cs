@@ -4,50 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SelectObject : MonoBehaviour, PlayerControls.IUIMapActions
+public class SelectObject : MonoBehaviour
 {
     [SerializeField]
     private ObjectPlacer objectPlacer;
+    private PlacementSystem placementSystem;
     private int selectedIndex = -1;// 当前选中物体的序号
-    #region 无用回调函数
-    public void OnReturn(InputAction.CallbackContext context)
-    {
-
-    }
-    public void OnToggleConsoleMode(InputAction.CallbackContext context)
-    {
-
-    }
-    public void OnToggleDebugMode(InputAction.CallbackContext context)
-    {
-
-    }
-    public void OnToggleEditMode(InputAction.CallbackContext context)
-    {
-
-    }
-    #endregion
-    public void OnSelect(InputAction.CallbackContext context)
-    {
-        Debug.Log("OnSelect");
-        selectBuilding();
-    }
-    
+    public bool SelectModeToggleOn = false;
 
     private void Awake()
     {
         objectPlacer = FindObjectOfType<ObjectPlacer>();
         if (objectPlacer == null)
         {
-            Debug.LogError("未找到objectPlacer组件！");
+            Debug.LogError("未找到ObjectPlacer组件！");
         }
-        else
-            Debug.Log("找到objectPlacer组件！");
+        placementSystem = FindObjectOfType<PlacementSystem>();
+        if (placementSystem == null)
+        {
+            Debug.LogError("未找到PlacementSystem组件！");
+        }
+    }
+    public void toggleSelectModeOn()
+    {
+        SelectModeToggleOn = true;
+        placementSystem.initState();
     }
     public void selectBuilding()
     {
-        Debug.Log("new onselect");
-
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -93,7 +77,7 @@ public class SelectObject : MonoBehaviour, PlayerControls.IUIMapActions
                     }
 
                     // 设置新选中对象为红色
-                    Renderer renderer = current.GetComponent<Renderer>();
+                    Renderer renderer = current.GetComponentInChildren<Renderer>();
                     if (renderer != null)
                     {
                         renderer.material.color = Color.red;

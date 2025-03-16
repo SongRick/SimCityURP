@@ -16,12 +16,12 @@ namespace SimCity.FinalController
         public bool EditModeToggleOn { get; private set; } = false;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool ConsoleModeToggleOn { get; private set; } = false;
-        public bool SelectObjectPressed { get; private set; }
 
         private PlacementSystem placementSystem;
         private HidePanel scrpUI;
         private InputManager inputManager; // 新增InputManager引用
         private ConsoleConcroller consoleConcroller;// 新增ConsoleConcroller引用
+        private SelectObject selectObject;// 新增SelectObject引用
         #endregion
 
         #region Startup
@@ -37,6 +37,11 @@ namespace SimCity.FinalController
             if (consoleConcroller == null)
             {
                 Debug.LogError("未找到ConsoleConcroller组件！");
+            }
+            selectObject = FindObjectOfType<SelectObject>();
+            if (selectObject == null)
+            {
+                Debug.LogError("未找到selectObject组件！");
             }
 
             PlayerControls = new PlayerControls();
@@ -112,8 +117,19 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                // 触发鼠标左键点击事件
-                inputManager.TriggerOnClicked();
+                // 选择模式
+                if (selectObject.SelectModeToggleOn)
+                {
+                    placementSystem.StopPlacement();
+                    placementSystem.gridVisualization.SetActive(EditModeToggleOn);
+                    selectObject.selectBuilding();
+
+                }
+                // 建造/移除模式下，触发鼠标左键点击事件
+                else
+                {
+                    inputManager.TriggerOnClicked();
+                }
             }
         }
 
@@ -226,5 +242,6 @@ namespace SimCity.FinalController
             }
         }
         #endregion
+
     }
 }

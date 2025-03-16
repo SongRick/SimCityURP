@@ -20,7 +20,7 @@ public class PlacementSystem : MonoBehaviour
 
     // 网格可视化对象，用于显示网格辅助
     [SerializeField]
-    private GameObject gridVisualization;
+    public GameObject gridVisualization;
 
     // 错误放置音效剪辑
     [SerializeField]
@@ -53,6 +53,7 @@ public class PlacementSystem : MonoBehaviour
 
     // UI 输入组件，用于获取用户的 UI 输入
     private UIInput _UIInput;
+    private SelectObject selectObject;
     // 目标游戏对象，通常是玩家对象
     GameObject targetGameObject;
 
@@ -65,15 +66,19 @@ public class PlacementSystem : MonoBehaviour
         updateEditMode();
         // 初始化网格数据对象
         gridData = new();
+
+        selectObject = FindObjectOfType<SelectObject>();
+        if (selectObject == null)
+        {
+            Debug.LogError("未找到SelectObject组件！");
+        }
     }
 
     // 开始物体放置操作
     public void StartPlacement(int ID)
     {
-        // 停止当前的放置或移除操作
-        StopPlacement();
-        // 根据编辑模式开关激活或禁用网格可视化
-        gridVisualization.SetActive(_UIInput.EditModeToggleOn);
+        selectObject.SelectModeToggleOn = false;
+        initState();        
         // select状态，终止后续操作
         if (ID == -2)
             return;
@@ -84,14 +89,18 @@ public class PlacementSystem : MonoBehaviour
         // 注册退出事件处理方法
         inputManager.OnExit += StopPlacement;
     }
-
-    // 开始物体移除操作
-    public void StartRemoving()
+    public void initState()
     {
         // 停止当前的放置或移除操作
         StopPlacement();
         // 根据编辑模式开关激活或禁用网格可视化
         gridVisualization.SetActive(_UIInput.EditModeToggleOn);
+    }
+
+    // 开始物体移除操作
+    public void StartRemoving()
+    {
+        initState();
         // 创建一个新的移除状态对象
         buildingState = new RemovingState(grid, preview, gridData, objectPlacer, soundFeedback);
         // 注册点击事件处理方法
@@ -155,6 +164,8 @@ public class PlacementSystem : MonoBehaviour
         // 根据编辑模式开关激活或禁用网格可视化
         gridVisualization.SetActive(_UIInput.EditModeToggleOn);
     }
+
+
 
     // 每帧更新时调用的方法
     private void Update()
