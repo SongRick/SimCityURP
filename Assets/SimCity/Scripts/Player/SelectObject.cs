@@ -21,7 +21,8 @@ public class SelectObject : MonoBehaviour
     // 当前选中物体在 objectPlacer.placedGameObjects 列表中的索引，初始化为 -1 表示未选中任何物体
     private int selectedIndex = -1;
     private int lastSelectedIndex = -1;
-
+    private Renderer selectedRenderer;
+    private Renderer lastSelectedRenderer;
     // 选择模式开关，用于控制是否开启选择物体的功能
     public bool SelectModeToggleOn = false;
     // 新增字段：保存原始材质和颜色
@@ -83,6 +84,7 @@ public class SelectObject : MonoBehaviour
                 else
                 {
                     Debug.Log("点击的对象是" + clickedObject + "，在建筑列表中的序号是：" + selectedIndex);
+                    changeSelectedState(selectedIndex);
                 }
             }
         }
@@ -119,6 +121,49 @@ public class SelectObject : MonoBehaviour
 
     public void changeSelectedState(int index)
     {
+        // 验证索引有效性
+        if (objectPlacer == null ||
+            objectPlacer.placedGameObjects == null ||
+            index < 0 ||
+            index >= objectPlacer.placedGameObjects.Count)
+        {
+            Debug.LogError("无效的索引或组件未初始化");
+            return;
+        }
 
+        // 获取目标对象A
+        GameObject objA = objectPlacer.placedGameObjects[index].transform.GetChild(0).gameObject;
+        if (objA == null)
+        {
+            Debug.LogError($"索引 {index} 对应的对象不存在");
+            return;
+        }
+
+        // 寻找同名子对象B
+        GameObject objB = null;
+        foreach (Transform child in objA.transform)
+        {
+            if (child.gameObject.name == objA.name)
+            {
+                objB = child.gameObject;
+                break;
+            }
+        }
+        // 如果存在同名子对象
+        if (objB)
+        {
+            Debug.Log("objB:" + objB.name);
+            selectedRenderer = objA.GetComponent<Renderer>();
+        }
+        // 如果不存在同名子对象
+        else
+        {
+            Debug.Log("objA:" + objA.name);
+            selectedRenderer = objA.GetComponent<Renderer>();
+        }
+        if(selectedRenderer)
+        {
+            selectedRenderer.material.color = Color.red;
+        }
     }
 }
