@@ -20,6 +20,8 @@ public class SelectObject : MonoBehaviour
     private PlacementSystem placementSystem;
     // 当前选中物体在 objectPlacer.placedGameObjects 列表中的索引，初始化为 -1 表示未选中任何物体
     private int selectedIndex = -1;
+    private int lastSelectedIndex = -1;
+
     // 选择模式开关，用于控制是否开启选择物体的功能
     public bool SelectModeToggleOn = false;
     // 新增字段：保存原始材质和颜色
@@ -71,68 +73,52 @@ public class SelectObject : MonoBehaviour
                 GameObject clickedObject = hit.collider.gameObject;
                 // 临时变量，用于遍历父对象链
                 GameObject current = clickedObject;
-                // 标记是否为已放置的物体
-                bool isPlacedObject = false;
-
-                // 遍历父对象链，检查是否在 objectPlacer.placedGameObjects 列表中
-                while (current != null && !isPlacedObject)
+                selectedIndex = getIndexInBuildinglist(clickedObject);
+                // 找到了点击的对象，但不在列表中
+                if (selectedIndex == -1) 
                 {
-                    // 遍历 objectPlacer.placedGameObjects 列表中的每个物体
-                    foreach (var obj in objectPlacer.placedGameObjects)
-                    {
-                        // 检查当前物体是否在列表中
-                        if (obj != null && obj == current)
-                        {
-                            // 如果在列表中，标记为已放置的物体
-                            isPlacedObject = true;
-                            break;
-                        }
-                    }
-                    // 如果不是已放置的物体，继续检查其父对象
-                    if (!isPlacedObject)
-                    {
-                        // 获取当前物体的父对象
-                        current = current.transform.parent?.gameObject;
-                    }
+                    Debug.Log("点击的对象是" + clickedObject + "，不在建筑列表中！");
                 }
-
-                // 修改后的选中逻辑
-                if (isPlacedObject)
+                // 找到了点击的对象，且在列表中
+                else
                 {
-                    // 恢复上一个选中对象的颜色（改进版）
-                    if (selectedIndex != -1 && selectedIndex < objectPlacer.placedGameObjects.Count)
-                    {
-                        GameObject prevObj = objectPlacer.placedGameObjects[selectedIndex];
-                        if (prevObj != null)
-                        {
-                            // 关键修改：获取子对象Renderer（同名情况适用）
-                            Renderer prevChildRenderer = prevObj.transform.Find("BB-080")?.GetComponent<Renderer>();
-                            if (prevChildRenderer != null && originalMaterial != null)
-                            {
-                                // 还原原始材质和颜色
-                                prevChildRenderer.material = originalMaterial;
-                                prevChildRenderer.material.color = originalColor;
-                            }
-                        }
-                    }
-
-                    // 设置新选中对象为红色
-                    Renderer currentRenderer = current.GetComponentInChildren<Renderer>();
-                    if (currentRenderer != null)
-                    {
-                        // 保存原始材质和颜色
-                        originalMaterial = currentRenderer.material;
-                        originalColor = originalMaterial.color;
-
-                        // 创建新材质实例避免污染原始材质
-                        Material highlightMat = new Material(originalMaterial);
-                        highlightMat.color = Color.red;
-                        currentRenderer.material = highlightMat;
-
-                        selectedIndex = objectPlacer.placedGameObjects.IndexOf(current);
-                    }
+                    Debug.Log("点击的对象是" + clickedObject + "，在建筑列表中的序号是：" + selectedIndex);
                 }
             }
         }
+    }
+    // 返回鼠标点击的对象在建筑列表里的序号，若不在列表中，则返回-1
+    public int getIndexInBuildinglist(GameObject gameObject)
+    {
+        // 处理空对象或无效组件的情况
+        if (gameObject == null || objectPlacer == null || objectPlacer.placedGameObjects == null)
+            return -1;
+
+        GameObject current = gameObject;
+
+        // 向上遍历父对象链
+        while (current != null)
+        {
+            // 遍历已放置对象列表
+            for (int i = 0; i < objectPlacer.placedGameObjects.Count; i++)
+            {
+                // 找到匹配的父对象时返回索引
+                if (objectPlacer.placedGameObjects[i] == current)
+                {
+                    return i;
+                }
+            }
+
+            // 移动到上一级父对象（使用空值传播避免NullReference）
+            current = current.transform.parent?.gameObject;
+        }
+
+        // 遍历完所有父对象仍未找到
+        return -1;
+    }
+
+    public void changeSelectedState(int index)
+    {
+
     }
 }
