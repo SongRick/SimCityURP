@@ -263,6 +263,7 @@ public class SelectObject : MonoBehaviour
     }
     public string countBuildingTypes()
     {
+        return null;
     }
 
 }
