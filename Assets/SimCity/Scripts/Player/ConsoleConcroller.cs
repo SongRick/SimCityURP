@@ -67,7 +67,7 @@ namespace SimCity.FinalController
         public static ConsoleCommand SHOW_INFO;
         public static ConsoleCommand REMOVE;
         public static ConsoleCommand<float> SET_HEIGHT;
-        public static ConsoleCommand COMMAND1;
+        public static ConsoleCommand COUNT_TYPES;
         public static ConsoleCommand COMMAND2;
 
         public SelectObject selectObject;
@@ -105,7 +105,7 @@ namespace SimCity.FinalController
             {
                 printContent = $"{input}\n{selectObject.setObjectHeight(x)}";
             });
-            COMMAND1 = new ConsoleCommand("command1", "command1", "command1", () =>
+            COUNT_TYPES = new ConsoleCommand("counttypes", "count the number of buildings in each category.", "counttypes", () =>
             {
 
             });
@@ -119,7 +119,7 @@ namespace SimCity.FinalController
                 SHOW_INFO,
                 REMOVE,
                 SET_HEIGHT,
-                COMMAND1,
+                COUNT_TYPES,
                 COMMAND2
             };
 

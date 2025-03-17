@@ -39,4 +39,8 @@ public class ObjectData
     // 该属性同样只能在初始化时赋值，之后不能被修改
     [field: SerializeField]
     public GameObject Prefab { get; private set; }
+    [field: SerializeField]
+    public int category { get; private set; }
+
+
 }

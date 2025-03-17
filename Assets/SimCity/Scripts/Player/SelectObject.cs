@@ -260,6 +260,9 @@ public class SelectObject : MonoBehaviour
             transform.localScale = new Vector3(1, x, 1);
             return strSetObjectHeight;
         }
-
     }
+    public string countBuildingTypes()
+    {
+    }
+
 }
