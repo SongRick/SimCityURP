@@ -1,12 +1,5 @@
-// 引入 SimCity.FinalController 命名空间，可能包含与游戏最终控制器相关的类和功能
-using SimCity.FinalController;
-// 引入 System.Collections 命名空间，该命名空间提供了用于处理集合的接口和类
-using System.Collections;
-// 引入 System.Collections.Generic 命名空间，提供了泛型集合相关的接口和类
 using System.Collections.Generic;
-// 引入 UnityEngine 命名空间，这是 Unity 引擎的核心命名空间，包含了大量基础类和功能
 using UnityEngine;
-// 引入 UnityEngine.InputSystem 命名空间，用于处理输入系统相关的功能
 using UnityEngine.InputSystem;
 
 // 定义一个名为 SelectObject 的公共类，继承自 MonoBehaviour，这意味着它可以作为一个组件挂载到游戏对象上
@@ -23,8 +16,8 @@ public class SelectObject : MonoBehaviour
     private int lastSelectedIndex = -1;
     private Renderer selectedRenderer;
     private Renderer lastSelectedRenderer;
-    private Material[] selectedMaterials;
-    private Material[] lastSelectedMaterials;
+    private List<Material> selectedMaterials = new();
+    private List<Material> lastSelectedMaterials = new();
     // 选择模式开关，用于控制是否开启选择物体的功能
     public bool SelectModeToggleOn = false;
     // 新增字段：保存原始材质和颜色
@@ -121,8 +114,22 @@ public class SelectObject : MonoBehaviour
         return -1;
     }
 
+    // placedGameObjects列表里的建筑变色
     public void changeSelectedState(int index)
     {
+        // 如果发现存在已处于选中状态的建筑，则将其恢复
+        if (lastSelectedIndex != -1)
+        {
+            if (lastSelectedMaterials != null)
+            {
+                for (int i = 0; i < selectedMaterials.Count; i++)
+                {
+                    //Debug.Log("准备恢复已变色建筑：selectedMaterials " + i + " : " + selectedMaterials[i].color);
+                    //Debug.Log("准备恢复已变色建筑：lastSelectedMaterials " + i + " : " + lastSelectedMaterials[i].color);
+                    selectedMaterials[i].color = lastSelectedMaterials[i].color;
+                }
+            }
+        }
         // 验证索引有效性
         if (objectPlacer == null ||
             objectPlacer.placedGameObjects == null ||
@@ -140,40 +147,35 @@ public class SelectObject : MonoBehaviour
             Debug.LogError($"索引 {index} 对应的对象不存在");
             return;
         }
+        selectedMaterials.Add(objA.GetComponent<Renderer>().material);
 
-        // 寻找同名子对象B
-        GameObject objB = null;
+        // 寻找同名子对象，若存在，则将其下名为"Atlas-1"的material加入selectedMaterials列表
         foreach (Transform child in objA.transform)
         {
             if (child.gameObject.name == objA.name)
             {
-                objB = child.gameObject;
-                break;
-            }
-        }
-        // 如果存在同名子对象
-        if (objB)
-        {
-            Debug.Log("objB:" + objB.name);
-            selectedRenderer = objB.GetComponent<Renderer>();
-        }
-        // 如果不存在同名子对象
-        else
-        {
-            Debug.Log("objA:" + objA.name);
-            selectedRenderer = objA.GetComponent<Renderer>();
-        }
-        if(selectedRenderer)
-        {
-            Material[] materials = selectedRenderer.materials;
-            foreach (Material material in materials)
-            {
-                Debug.Log(material.name);
-                if (material.name.Contains("Atlas-1")) 
+                foreach (Material material in child.gameObject.GetComponent<Renderer>().materials)
                 {
-                    material.SetColor("_BaseColor", Color.red); // URP 默认属性名
+                    if (material.name.Contains("Atlas-1"))
+                    {
+                        //Debug.Log("find material named atlas : " + material.name);
+                        selectedMaterials.Add(material);
+                        break;
+                    }
                 }
             }
+        }
+        if (selectedMaterials!=null)
+        {
+            lastSelectedIndex = selectedIndex;
+            lastSelectedMaterials = selectedMaterials;
+            Debug.Log("lastSelectedMaterials: " + lastSelectedMaterials[0].color);
+            foreach (Material material in selectedMaterials)
+            {
+                material.color = Color.red;
+            }
+
+            Debug.Log("SelectedMaterials: " + selectedMaterials[0].color);
         }
     }
 }
