@@ -23,6 +23,8 @@ public class SelectObject : MonoBehaviour
     private int lastSelectedIndex = -1;
     private Renderer selectedRenderer;
     private Renderer lastSelectedRenderer;
+    private Material[] selectedMaterials;
+    private Material[] lastSelectedMaterials;
     // 选择模式开关，用于控制是否开启选择物体的功能
     public bool SelectModeToggleOn = false;
     // 新增字段：保存原始材质和颜色
@@ -153,7 +155,7 @@ public class SelectObject : MonoBehaviour
         if (objB)
         {
             Debug.Log("objB:" + objB.name);
-            selectedRenderer = objA.GetComponent<Renderer>();
+            selectedRenderer = objB.GetComponent<Renderer>();
         }
         // 如果不存在同名子对象
         else
@@ -163,7 +165,15 @@ public class SelectObject : MonoBehaviour
         }
         if(selectedRenderer)
         {
-            selectedRenderer.material.color = Color.red;
+            Material[] materials = selectedRenderer.materials;
+            foreach (Material material in materials)
+            {
+                Debug.Log(material.name);
+                if (material.name.Contains("Atlas-1")) 
+                {
+                    material.SetColor("_BaseColor", Color.red); // URP 默认属性名
+                }
+            }
         }
     }
 }

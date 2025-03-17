@@ -40,6 +40,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8961872039977355111}
     m_Modifications:
+    - target: {fileID: 200751683149349436, guid: 5b074732065204e46bfbe32c80725ddb,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 328619199815385339, guid: 5b074732065204e46bfbe32c80725ddb,
         type: 3}
       propertyPath: m_StaticEditorFlags
