@@ -70,12 +70,20 @@ namespace SimCity.FinalController
         public static ConsoleCommand COMMAND1;
         public static ConsoleCommand COMMAND2;
 
+        public SelectObject selectObject;
+
 
         public List<object> commandList;
 
 
         private void Awake()
         {
+            // 初始化SelectObject
+            selectObject = FindObjectOfType<SelectObject>();
+            if (selectObject == null)
+            {
+                Debug.LogError("未找到SelectObject组件！");
+            }
             HELP = new ConsoleCommand("help", "shows a list of commands", "help", () =>
             {
                 printContent = "";
@@ -87,7 +95,7 @@ namespace SimCity.FinalController
             });
             SHOW_INFO = new ConsoleCommand("showinfo", "display information of the selected object", "showinfo", () =>
             {
-
+                printContent = $"{input}\n{selectObject.showObjectInfo()}";
             });
             REMOVE = new ConsoleCommand("remove", "remove the selected object", "remove", () =>
             {

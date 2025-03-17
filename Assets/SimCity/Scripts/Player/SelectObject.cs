@@ -216,4 +216,21 @@ public class SelectObject : MonoBehaviour
             }
         }
     }
+
+    private string debugNoObjectSelected = "No object selected, please select an object first!";
+    public string showObjectInfo()
+    {
+        if (selectedIndex == -1)
+        {
+            return debugNoObjectSelected;
+        }
+        else
+        {
+            Transform transform = objectPlacer.placedGameObjects[selectedIndex].transform;
+            return $"Name:\t{transform.name}\n" +
+                $"Position:\t{transform.position}\n" +
+                $"Rotation:\t{transform.rotation}\n" +
+                $"Scale:\t{transform.localScale}\n";
+        }
+    }
 }
