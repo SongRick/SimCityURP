@@ -233,4 +233,18 @@ public class SelectObject : MonoBehaviour
                 $"Scale:\t{transform.localScale}\n";
         }
     }
+    public string removeObject()
+    {
+        if (selectedIndex == -1)
+        {
+            return debugNoObjectSelected;
+        }
+        else
+        {
+            Transform transform = objectPlacer.placedGameObjects[selectedIndex].transform;
+            string strRemoveObject = $"{transform.name} has been removed!";
+            objectPlacer.RemoveObjectAt(selectedIndex);
+            return strRemoveObject;
+        }
+    }
 }

@@ -99,7 +99,7 @@ namespace SimCity.FinalController
             });
             REMOVE = new ConsoleCommand("remove", "remove the selected object", "remove", () =>
             {
-
+                printContent = $"{input}\n{selectObject.removeObject()}";
             });
             SET_HEIGHT = new ConsoleCommand<float>("setheight", "set the height of the selected object to x times the default height.", "setheight <x>", (x) =>
             {
