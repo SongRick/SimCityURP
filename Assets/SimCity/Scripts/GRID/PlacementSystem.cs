@@ -78,10 +78,7 @@ public class PlacementSystem : MonoBehaviour
     public void StartPlacement(int ID)
     {
         selectObject.SelectModeToggleOn = false;
-        initState();        
-        // select状态，终止后续操作
-        if (ID == -2)
-            return;
+        initState();
         // 创建一个新的放置状态对象
         buildingState = new PlacementState(ID, grid, preview, database, gridData, objectPlacer, soundFeedback);
         // 注册点击事件处理方法
@@ -100,6 +97,7 @@ public class PlacementSystem : MonoBehaviour
     // 开始物体移除操作
     public void StartRemoving()
     {
+        selectObject.SelectModeToggleOn = false;
         initState();
         // 创建一个新的移除状态对象
         buildingState = new RemovingState(grid, preview, gridData, objectPlacer, soundFeedback);
