@@ -103,7 +103,7 @@ namespace SimCity.FinalController
             });
             SET_HEIGHT = new ConsoleCommand<float>("setheight", "set the height of the selected object to x times the default height.", "setheight <x>", (x) =>
             {
-
+                printContent = $"{input}\n{selectObject.setObjectHeight(x)}";
             });
             COMMAND1 = new ConsoleCommand("command1", "command1", "command1", () =>
             {

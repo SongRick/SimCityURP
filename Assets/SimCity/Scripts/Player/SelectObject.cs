@@ -247,4 +247,19 @@ public class SelectObject : MonoBehaviour
             return strRemoveObject;
         }
     }
+    public string setObjectHeight(float x)
+    {
+        if (selectedIndex == -1)
+        {
+            return debugNoObjectSelected;
+        }
+        else
+        {
+            Transform transform = objectPlacer.placedGameObjects[selectedIndex].transform;
+            string strSetObjectHeight = $"The height of {transform.name} has changed to {x} times";
+            transform.localScale = new Vector3(1, x, 1);
+            return strSetObjectHeight;
+        }
+
+    }
 }
