@@ -11,16 +11,16 @@ public class ObjectPlacer : MonoBehaviour
     public List<GameObject> placedGameObjects = new();
 
     // 用于存储每个已放置游戏对象对应的 category
-    private List<int> categoryList = new List<int>();
+    private List<string> categoryList = new List<string>();
 
     // 用于存储每个 category 及其对应的建筑数量
-    private Dictionary<int, int> categoryCount = new Dictionary<int, int>();
+    private Dictionary<string, int> categoryCount = new Dictionary<string, int>();
 
     // 该方法用于在指定位置放置一个游戏对象，并返回该对象在列表中的索引
     // 参数 prefab: 要放置的游戏对象的预制体
     // 参数 position: 游戏对象要放置的位置
     // 参数 parent: 指定的父 GameObject，若传入 null 则不设置父对象
-    public int PlaceObject(GameObject prefab, Vector3 position, int category, GameObject parent = null)
+    public int PlaceObject(GameObject prefab, Vector3 position, string category, GameObject parent = null)
     {
         // 实例化传入的预制体，创建一个新的游戏对象
         GameObject newObject = Instantiate(prefab);
@@ -68,7 +68,7 @@ public class ObjectPlacer : MonoBehaviour
         }
 
         // 获取要移除对象的 category
-        int category = categoryList[gameObjectIndex];
+        string category = categoryList[gameObjectIndex];
 
         // 如果索引有效且对象不为空，则销毁该游戏对象
         Destroy(placedGameObjects[gameObjectIndex]);
@@ -77,7 +77,7 @@ public class ObjectPlacer : MonoBehaviour
         placedGameObjects[gameObjectIndex] = null;
 
         // 移除对应的 category 记录
-        categoryList[gameObjectIndex] = -1; // 用 -1 表示已移除
+        categoryList[gameObjectIndex] = "0"; // 用 0 表示已移除
 
         // 更新 category 计数
         if (categoryCount.ContainsKey(category))
@@ -91,7 +91,7 @@ public class ObjectPlacer : MonoBehaviour
     }
 
     // 提供一个公共方法，用于获取 category 统计信息
-    public Dictionary<int, int> GetCategoryCount()
+    public Dictionary<string, int> GetCategoryCount()
     {
         return categoryCount;
     }

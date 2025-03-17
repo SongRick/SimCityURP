@@ -264,9 +264,9 @@ public class SelectObject : MonoBehaviour
     }
     public string countBuildingTypes()
     {
-        Dictionary<int, int> categoryCount = objectPlacer.GetCategoryCount();
+        Dictionary<string, int> categoryCount = objectPlacer.GetCategoryCount();
         string strCountBuildingTypes = "category\tcount\n";
-        foreach (KeyValuePair<int, int> pair in categoryCount)
+        foreach (KeyValuePair<string, int> pair in categoryCount)
         {
             strCountBuildingTypes += $"{pair.Key}\t{pair.Value}\n";
         }

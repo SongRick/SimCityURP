@@ -40,7 +40,7 @@ public class ObjectData
     [field: SerializeField]
     public GameObject Prefab { get; private set; }
     [field: SerializeField]
-    public int category { get; private set; }
+    public string category { get; private set; }
 
 
 }
