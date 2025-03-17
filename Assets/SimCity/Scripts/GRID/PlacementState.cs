@@ -94,7 +94,7 @@ public class PlacementState : IBuildingState
         soundFeedback.PlaySound(SoundType.Place);
         // 调用物体放置器将所选物体放置到指定的世界坐标位置，并获取该物体的索引，指定父 gameobject
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab,
-            grid.CellToWorld(gridPosition), parentObject);
+            grid.CellToWorld(gridPosition), database.objectsData[selectedObjectIndex].category, parentObject);
 
         // 在网格数据中记录该物体的放置信息
         gridData.AddObjectAt(gridPosition,

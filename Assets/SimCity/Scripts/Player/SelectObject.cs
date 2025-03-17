@@ -1,4 +1,5 @@
 // 引入泛型集合命名空间，用于使用如 List、Dictionary 等数据结构
+using System;
 using System.Collections.Generic;
 // 引入 Unity 引擎核心命名空间，包含了游戏对象、组件等核心功能
 using UnityEngine;
@@ -263,7 +264,14 @@ public class SelectObject : MonoBehaviour
     }
     public string countBuildingTypes()
     {
-        return null;
+        Dictionary<int, int> categoryCount = objectPlacer.GetCategoryCount();
+        string strCountBuildingTypes = "category\tcount\n";
+        foreach (KeyValuePair<int, int> pair in categoryCount)
+        {
+            strCountBuildingTypes += $"{pair.Key}\t{pair.Value}\n";
+        }
+
+        return strCountBuildingTypes;
     }
 
 }

@@ -10,11 +10,17 @@ public class ObjectPlacer : MonoBehaviour
     [SerializeField]
     public List<GameObject> placedGameObjects = new();
 
+    // 用于存储每个已放置游戏对象对应的 category
+    private List<int> categoryList = new List<int>();
+
+    // 用于存储每个 category 及其对应的建筑数量
+    private Dictionary<int, int> categoryCount = new Dictionary<int, int>();
+
     // 该方法用于在指定位置放置一个游戏对象，并返回该对象在列表中的索引
     // 参数 prefab: 要放置的游戏对象的预制体
     // 参数 position: 游戏对象要放置的位置
     // 参数 parent: 指定的父 GameObject，若传入 null 则不设置父对象
-    public int PlaceObject(GameObject prefab, Vector3 position, GameObject parent = null)
+    public int PlaceObject(GameObject prefab, Vector3 position, int category, GameObject parent = null)
     {
         // 实例化传入的预制体，创建一个新的游戏对象
         GameObject newObject = Instantiate(prefab);
@@ -30,6 +36,19 @@ public class ObjectPlacer : MonoBehaviour
 
         // 将新创建的游戏对象添加到已放置游戏对象列表中
         placedGameObjects.Add(newObject);
+
+        // 将对应的 category 添加到 categoryList 中
+        categoryList.Add(category);
+
+        // 更新 category 计数
+        if (categoryCount.ContainsKey(category))
+        {
+            categoryCount[category]++;
+        }
+        else
+        {
+            categoryCount[category] = 1;
+        }
 
         // 返回新对象在列表中的索引，由于列表索引从 0 开始，所以使用列表的当前数量减 1
         return placedGameObjects.Count - 1;
@@ -48,10 +67,32 @@ public class ObjectPlacer : MonoBehaviour
             return;
         }
 
+        // 获取要移除对象的 category
+        int category = categoryList[gameObjectIndex];
+
         // 如果索引有效且对象不为空，则销毁该游戏对象
         Destroy(placedGameObjects[gameObjectIndex]);
 
         // 将该索引位置的列表元素置为 null，以便后续处理
         placedGameObjects[gameObjectIndex] = null;
+
+        // 移除对应的 category 记录
+        categoryList[gameObjectIndex] = -1; // 用 -1 表示已移除
+
+        // 更新 category 计数
+        if (categoryCount.ContainsKey(category))
+        {
+            categoryCount[category]--;
+            if (categoryCount[category] == 0)
+            {
+                categoryCount.Remove(category);
+            }
+        }
+    }
+
+    // 提供一个公共方法，用于获取 category 统计信息
+    public Dictionary<int, int> GetCategoryCount()
+    {
+        return categoryCount;
     }
 }

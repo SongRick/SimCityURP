@@ -107,7 +107,7 @@ namespace SimCity.FinalController
             });
             COUNT_TYPES = new ConsoleCommand("counttypes", "count the number of buildings in each category.", "counttypes", () =>
             {
-
+                printContent = $"{input}\n{selectObject.countBuildingTypes()}";
             });
             COMMAND2 = new ConsoleCommand("command2", "command2", "command2", () =>
             {
