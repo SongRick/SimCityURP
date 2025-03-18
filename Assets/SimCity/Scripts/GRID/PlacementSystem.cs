@@ -12,7 +12,7 @@ public class PlacementSystem : MonoBehaviour
 
     // 网格对象，用于定位和布局
     [SerializeField]
-    private Grid grid;
+    public Grid grid;
 
     // 物体数据库，存储可放置的物体信息
     [SerializeField]
@@ -31,7 +31,7 @@ public class PlacementSystem : MonoBehaviour
     private AudioSource source;
 
     // 网格数据对象，存储网格相关信息
-    private GridData gridData;
+    public GridData gridData;
 
     // 预览系统，用于显示物体放置的预览效果
     [SerializeField]
@@ -56,6 +56,8 @@ public class PlacementSystem : MonoBehaviour
     private SelectObject selectObject;
     // 目标游戏对象，通常是玩家对象
     GameObject targetGameObject;
+    // PlacementSystem.cs 新增字段
+    public LayerMask placementLayermask;
 
     // 脚本开始时调用的方法
     private void Start()
@@ -72,6 +74,7 @@ public class PlacementSystem : MonoBehaviour
         {
             Debug.LogError("未找到SelectObject组件！");
         }
+        placementLayermask = inputManager.placementLayermask;
     }
 
     // 开始物体放置操作

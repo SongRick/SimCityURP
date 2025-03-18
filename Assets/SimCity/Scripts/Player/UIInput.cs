@@ -114,22 +114,24 @@ namespace SimCity.FinalController
             }
         }
 
+        // UIInput.cs 修改 OnSelect 方法
         public void OnSelect(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
-                // 选择模式
                 if (selectObject.SelectModeToggleOn)
                 {
                     placementSystem.StopPlacement();
                     placementSystem.gridVisualization.SetActive(EditModeToggleOn);
                     selectObject.selectBuilding();
-
                 }
-                // 建造/移除模式下，触发鼠标左键点击事件
                 else
                 {
-                    inputManager.TriggerOnClicked();
+                    // 仅在非选择模式下触发点击
+                    if (!selectObject.isDragging)
+                    {
+                        inputManager.TriggerOnClicked();
+                    }
                 }
             }
         }

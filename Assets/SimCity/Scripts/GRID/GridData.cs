@@ -109,6 +109,38 @@ public class GridData
             placedObjects.Remove(pos);
         }
     }
+    // GridData.cs 新增方法
+    public PlacementData GetPlacementDataByIndex(int index)
+    {
+        foreach (var data in placedObjects.Values)
+        {
+            if (data.PlacedObjectIndex == index)
+                return data;
+        }
+        return null;
+    }
+
+    public void MoveObject(Vector3Int newGridPosition, int index)
+    {
+        PlacementData data = GetPlacementDataByIndex(index);
+        if (data == null) return;
+
+        // 移除旧位置
+        foreach (var pos in data.occupiedPositions)
+        {
+            placedObjects.Remove(pos);
+        }
+
+        // 计算新位置
+        List<Vector3Int> newPositions = CalculatePositions(newGridPosition, data.Size);
+
+        // 添加新位置
+        foreach (var pos in newPositions)
+        {
+            placedObjects[pos] = data;
+        }
+        data.occupiedPositions = newPositions;
+    }
 }
 
 // PlacementData 类：存储单个物体在网格上的放置信息

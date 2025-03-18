@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     private Vector3 lastPosition;
 
     [SerializeField]
-    private LayerMask placementLayermask;
+    public LayerMask placementLayermask;
 
     public event Action OnClicked, OnExit;
 
