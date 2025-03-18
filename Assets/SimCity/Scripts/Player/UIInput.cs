@@ -13,6 +13,7 @@ namespace SimCity.FinalController
         #region Class variables
         public PlayerControls PlayerControls { get; private set; }
         public bool CursorLockToggleOn { get; private set; } = false;
+        public bool lastCursorLockToggleOn { get; private set; } = false;
         public bool EditModeToggleOn { get; private set; } = false;
         public bool DebugModeToggleOn { get; private set; } = true;
         public bool ConsoleModeToggleOn { get; private set; } = false;
@@ -141,8 +142,8 @@ namespace SimCity.FinalController
                 if (!ConsoleModeToggleOn)
                 {
                     ConsoleModeToggleOn = !ConsoleModeToggleOn;
-                    Debug.Log("ConsoleModeToggleOn");
                     Time.timeScale = 0f;
+                    lastCursorLockToggleOn = CursorLockToggleOn;
                     // 视角锁定
                     CursorLockToggleOn = false;
                     consoleConcroller.input = "";
@@ -151,13 +152,9 @@ namespace SimCity.FinalController
                 else
                 {
                     ConsoleModeToggleOn = !ConsoleModeToggleOn;
-                    Debug.Log("ConsoleModeToggleOff");
                     Time.timeScale = 1f;
-                    // 退出控制台模式时，视角解锁
-                    CursorLockToggleOn = true;
-                    // 若处于编辑模式，则退出控制台模式时，退出编辑模式
-                    if (EditModeToggleOn)
-                        OnToggleEditMode(context);
+                    // 退出控制台模式时，视角锁定恢复进入控制台之前的状态
+                    CursorLockToggleOn = lastCursorLockToggleOn;
                     consoleConcroller.printContent = "";
                 }
             }
