@@ -186,4 +186,22 @@ public class PlacementSystem : MonoBehaviour
             lastDetectedPosition = gridPosition;
         }
     }
+    // 在 PlacementSystem 类中添加
+    public void StartMoving(int index, Vector3Int gridPosition, Vector2Int size, int ID)
+    {
+        initState();
+        buildingState = new MovingState(
+            index,
+            gridPosition,
+            size,
+            ID,
+            grid,
+            preview,
+            gridData,
+            objectPlacer,
+            soundFeedback
+        );
+        inputManager.OnClicked += PlaceStructure;
+        inputManager.OnExit += StopPlacement;
+    }
 }

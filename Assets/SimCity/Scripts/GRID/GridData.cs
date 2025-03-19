@@ -109,6 +109,33 @@ public class GridData
             placedObjects.Remove(pos);
         }
     }
+    // 在 GridData 类中添加
+    public bool MoveObject(Vector3Int oldGridPosition, Vector3Int newGridPosition, Vector2Int objectSize, int ID, int placedObjectIndex)
+    {
+        // 获取旧位置所有占用的格子
+        var oldPositions = CalculatePositions(oldGridPosition, objectSize);
+
+        // 临时移除旧位置
+        foreach (var pos in oldPositions)
+        {
+            placedObjects.Remove(pos);
+        }
+
+        // 检查新位置是否可用
+        if (!CanPlaceObejctAt(newGridPosition, objectSize))
+        {
+            // 恢复旧位置
+            foreach (var pos in oldPositions)
+            {
+                placedObjects[pos] = new PlacementData(oldPositions, ID, placedObjectIndex);
+            }
+            return false;
+        }
+
+        // 添加新位置
+        AddObjectAt(newGridPosition, objectSize, ID, placedObjectIndex);
+        return true;
+    }
 }
 
 // PlacementData 类：存储单个物体在网格上的放置信息

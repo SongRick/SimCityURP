@@ -27,7 +27,9 @@ public class SelectObject : MonoBehaviour
     public bool SelectModeToggleOn = false;
     // 用于保存材质的原始颜色，键为材质，值为该材质的原始颜色
     private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
-
+    // 在 SelectObject 类中添加字段
+    private bool isDragging = false;
+    private Vector3 dragOffset;
     // 在脚本实例被加载时调用，常用于初始化操作
     private void Awake()
     {
@@ -93,6 +95,42 @@ public class SelectObject : MonoBehaviour
                     }
                 }
             }
+            if (selectedIndex != -1)
+            {
+                // 开始拖拽
+                isDragging = true;
+                Vector3 clickPosition = hit.point;
+                GameObject selectedObj = objectPlacer.placedGameObjects[selectedIndex];
+                dragOffset = selectedObj.transform.position - clickPosition;
+
+                // 进入移动状态
+                Vector3Int gridPos = grid.WorldToCell(selectedObj.transform.position);
+                PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
+                placementSystem.StartMoving(
+                    selectedIndex,
+                    gridPos,
+                    database.objectsData.Find(d => d.ID == ID).Size,
+                    ID
+                );
+            }
+        }
+
+        if (isDragging && Mouse.current.leftButton.isPressed)
+        {
+            // 实时更新位置
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Vector3 newPosition = hit.point + dragOffset;
+                placementSystem.buildingState.UpdateState(grid.WorldToCell(newPosition));
+            }
+        }
+
+        if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
+        {
+            isDragging = false;
+            // 结束移动
+            placementSystem.PlaceStructure();
         }
     }
 

@@ -95,4 +95,16 @@ public class ObjectPlacer : MonoBehaviour
     {
         return categoryCount;
     }
+    // 在 ObjectPlacer 类中添加
+    public void MoveObject(int index, Vector3 newPosition, GameObject parent = null)
+    {
+        if (placedGameObjects.Count <= index || placedGameObjects[index] == null)
+            return;
+
+        GameObject obj = placedGameObjects[index];
+        obj.transform.position = new Vector3(newPosition.x, newPosition.y + 0.01f, newPosition.z);
+
+        if (parent != null)
+            obj.transform.SetParent(parent.transform);
+    }
 }

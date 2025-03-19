@@ -45,18 +45,22 @@ public class PreviewSystem : MonoBehaviour
     // 开始显示放置预览效果
     // 参数 prefab: 要放置的物体的预制体
     // 参数 size: 物体的尺寸，用于调整光标指示器的大小
+    // 修改 StartShowingPlacementPreview 方法
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
-        // 实例化预制体作为预览对象
-        previewObject = Instantiate(prefab);
+        // 如果是移动状态，使用实际物体而不是预制体
+        if (prefab.scene.IsValid())
+        {
+            previewObject = prefab;
+            PreparePreview(previewObject);
+        }
+        else
+        {
+            previewObject = Instantiate(prefab);
+            PreparePreview(previewObject);
+        }
 
-        // 为预览对象应用预览材质
-        PreparePreview(previewObject);
-
-        // 根据物体尺寸调整光标指示器的大小和纹理缩放
         PrepareCursor(size);
-
-        // 启用光标指示器，开始显示操作位置
         cellIndicator.SetActive(true);
     }
 
