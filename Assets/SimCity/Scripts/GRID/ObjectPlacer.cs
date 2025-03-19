@@ -15,6 +15,12 @@ public class ObjectPlacer : MonoBehaviour
 
     // 用于存储每个 category 及其对应的建筑数量
     private Dictionary<string, int> categoryCount = new Dictionary<string, int>();
+    // 在 ObjectPlacer 类中添加
+    private Dictionary<int, int> idMap = new Dictionary<int, int>(); // 存储索引与 ID 的映射
+
+    // 物体数据库，存储可放置的物体信息
+    [SerializeField]
+    private ObjectsDatabaseSO database;
 
     // 该方法用于在指定位置放置一个游戏对象，并返回该对象在列表中的索引
     // 参数 prefab: 要放置的游戏对象的预制体
@@ -50,7 +56,10 @@ public class ObjectPlacer : MonoBehaviour
             categoryCount[category] = 1;
         }
 
-        // 返回新对象在列表中的索引，由于列表索引从 0 开始，所以使用列表的当前数量减 1
+        // 假设通过 category 或其他方式获取 ID（根据实际逻辑调整）
+        int id = database.objectsData.Find(d => d.category == category).ID;
+        idMap.Add(placedGameObjects.Count - 1, id); // 记录索引对应的 ID
+
         return placedGameObjects.Count - 1;
     }
 
@@ -106,5 +115,12 @@ public class ObjectPlacer : MonoBehaviour
 
         if (parent != null)
             obj.transform.SetParent(parent.transform);
+    }
+    // 新增方法：根据索引获取 ID
+    public int GetIDAtIndex(int index)
+    {
+        if (idMap.ContainsKey(index))
+            return idMap[index];
+        return -1;
     }
 }

@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placedGameObjects: []
+  database: {fileID: 11400000, guid: b20aebe169c311c40bdf91810a709ba7, type: 2}
 --- !u!1 &229014535
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPlacer: {fileID: 0}
   SelectModeToggleOn: 0
+  database: {fileID: 11400000, guid: b20aebe169c311c40bdf91810a709ba7, type: 2}
 --- !u!1 &506602769
 GameObject:
   m_ObjectHideFlags: 0

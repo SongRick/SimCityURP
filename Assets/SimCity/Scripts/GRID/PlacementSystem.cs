@@ -45,7 +45,7 @@ public class PlacementSystem : MonoBehaviour
     private ObjectPlacer objectPlacer;
 
     // 当前的建筑状态接口
-    IBuildingState buildingState;
+    public IBuildingState buildingState;
 
     // 音效反馈系统，用于播放不同类型的音效
     [SerializeField]
@@ -107,7 +107,7 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnExit += StopPlacement;
     }
     // 处理物体放置或移除的方法
-    private void PlaceStructure()
+    public void PlaceStructure()
     {
         // 如果鼠标指针在 UI 上，则不进行操作
         if (inputManager.IsPointerOverUI())
