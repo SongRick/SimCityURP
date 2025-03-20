@@ -273,5 +273,29 @@ public class SelectObject : MonoBehaviour
 
         return strCountBuildingTypes;
     }
+    // 清除选中状态的方法
+    public void ClearSelection()
+    {
+        if (lastSelectedMaterials.Count > 0)
+        {
+            // 遍历上一次选中的材质列表
+            foreach (Material mat in lastSelectedMaterials)
+            {
+                // 尝试从原始颜色字典中获取该材质的原始颜色
+                if (originalColors.TryGetValue(mat, out Color originalColor))
+                {
+                    // 将材质颜色恢复为原始颜色
+                    mat.color = originalColor;
+                }
+            }
+            // 清空原始颜色字典
+            originalColors.Clear();
+            // 清空上一次选中的材质列表
+            lastSelectedMaterials.Clear();
+            // 重置选中索引
+            lastSelectedIndex = -1;
+            selectedIndex = -1;
+        }
+    }
 
 }
