@@ -197,7 +197,7 @@ public class SelectObject : MonoBehaviour
             // 保存材质的原始颜色到原始颜色字典中
             originalColors[mat] = mat.color;
             // 将材质颜色设置为红色
-            mat.color = Color.red;
+            mat.color = Color.green;
         }
 
         // 更新上一次选中的材质列表为当前选中的材质列表
