@@ -27,10 +27,6 @@ public class SelectObject : MonoBehaviour
     public bool SelectModeToggleOn = false;
     // 用于保存材质的原始颜色，键为材质，值为该材质的原始颜色
     private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
-    public bool isDragging = false;
-    private Vector3 dragOffset;
-    private Grid grid;
-    private GridData gridData;
 
     // 在脚本实例被加载时调用，常用于初始化操作
     private void Awake()
@@ -44,8 +40,6 @@ public class SelectObject : MonoBehaviour
         placementSystem = FindObjectOfType<PlacementSystem>();
         // 如果未找到 PlacementSystem 组件，输出错误日志
         if (placementSystem == null) Debug.LogError("未找到PlacementSystem组件！");
-        grid = placementSystem.grid;
-        gridData = placementSystem.gridData;
     }
 
     // 用于开启选择模式的方法
@@ -58,45 +52,45 @@ public class SelectObject : MonoBehaviour
     }
 
     // 用于选择建筑的方法
-    // 修改 selectBuilding 方法
     public void selectBuilding()
     {
+        // 检查鼠标左键是否在当前帧被按下
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
+            // 从主摄像机的屏幕点发射一条射线，射线的起点为鼠标当前位置
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            // 用于存储射线碰撞信息的结构体
             RaycastHit hit;
+            // 发射射线并检查是否有碰撞
             if (Physics.Raycast(ray, out hit))
             {
-                // 原有选择逻辑...
-
-                if (selectedIndex != -1)
+                // 获取射线碰撞到的物体的游戏对象
+                GameObject clickedObject = hit.collider.gameObject;
+                // 获取点击对象在建筑列表中的索引
+                selectedIndex = getIndexInBuildinglist(clickedObject);
+                // 如果索引为 -1，说明点击的对象不在建筑列表中
+                if (selectedIndex == -1)
+                    Debug.Log("点击的对象是" + clickedObject + "，不在建筑列表中！");
+                else
                 {
-                    // 计算拖拽偏移
-                    dragOffset = objectPlacer.placedGameObjects[selectedIndex].transform.position - hit.point;
-                    isDragging = true;
-                }
-            }
-        }
+                    // 输出点击对象的信息和其在建筑列表中的索引
+                    Debug.Log("点击的对象是" + clickedObject + "，在建筑列表中的序号是：" + selectedIndex);
 
-        if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
-        {
-            isDragging = false;
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                Vector3Int newGridPosition = grid.WorldToCell(hit.point + dragOffset);
-
-                PlacementData data = gridData.GetPlacementDataByIndex(selectedIndex);
-                if (data != null && gridData.CanPlaceObejctAt(newGridPosition, data.Size))
-                {
-                    // 更新网格数据
-                    gridData.MoveObject(newGridPosition, selectedIndex);
-                    // 更新实际位置
-                    objectPlacer.UpdateObjectPosition(
-                        selectedIndex,
-                        grid.CellToWorld(newGridPosition) + Vector3.up * 0.01f
-                    );
+                    // 判断当前点击的建筑是否已经处于选中状态
+                    if (selectedIndex == lastSelectedIndex)
+                    {
+                        // 如果已经选中，恢复其初始颜色
+                        restoreOriginalColor(lastSelectedMaterials);
+                        lastSelectedIndex = -1;
+                        selectedIndex = -1;
+                        lastSelectedMaterials.Clear();
+                        originalColors.Clear();
+                    }
+                    else
+                    {
+                        // 调用方法改变选中对象的状态（颜色）
+                        changeSelectedState(selectedIndex);
+                    }
                 }
             }
         }
@@ -203,7 +197,7 @@ public class SelectObject : MonoBehaviour
             // 保存材质的原始颜色到原始颜色字典中
             originalColors[mat] = mat.color;
             // 将材质颜色设置为红色
-            mat.color = Color.red;
+            mat.color = Color.green;
         }
 
         // 更新上一次选中的材质列表为当前选中的材质列表
@@ -279,32 +273,29 @@ public class SelectObject : MonoBehaviour
 
         return strCountBuildingTypes;
     }
-    // 新增拖拽逻辑
-    private void Update()
+    // 清除选中状态的方法
+    public void ClearSelection()
     {
-        dragBuilding();
-    }
-    private void dragBuilding()
-    {
-        if (isDragging && selectedIndex != -1)
+        if (lastSelectedMaterials.Count > 0)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            // 遍历上一次选中的材质列表
+            foreach (Material mat in lastSelectedMaterials)
             {
-                Vector3Int gridPosition = grid.WorldToCell(hit.point + dragOffset);
-
-                // 检查新位置是否有效
-                PlacementData data = gridData.GetPlacementDataByIndex(selectedIndex);
-                if (data != null && gridData.CanPlaceObejctAt(gridPosition, data.Size))
+                // 尝试从原始颜色字典中获取该材质的原始颜色
+                if (originalColors.TryGetValue(mat, out Color originalColor))
                 {
-                    // 临时更新位置预览
-                    objectPlacer.placedGameObjects[selectedIndex].transform.position =
-                        grid.CellToWorld(gridPosition) + Vector3.up * 0.01f;
+                    // 将材质颜色恢复为原始颜色
+                    mat.color = originalColor;
                 }
             }
+            // 清空原始颜色字典
+            originalColors.Clear();
+            // 清空上一次选中的材质列表
+            lastSelectedMaterials.Clear();
+            // 重置选中索引
+            lastSelectedIndex = -1;
+            selectedIndex = -1;
         }
-
     }
 
 }

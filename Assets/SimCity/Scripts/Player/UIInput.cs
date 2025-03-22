@@ -80,6 +80,7 @@ namespace SimCity.FinalController
                 {
                     // 触发OnExit事件
                     inputManager.TriggerOnExit();
+                    selectObject.ClearSelection();
                 }
 
                 EditModeToggleOn = newState;
