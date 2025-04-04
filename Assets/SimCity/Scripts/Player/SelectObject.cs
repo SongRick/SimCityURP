@@ -133,7 +133,7 @@ public class SelectObject : MonoBehaviour
         // 存储当前选中对象的材质列表
         List<Material> currentMaterials = new List<Material>();
         // 获取目标对象 A
-        GameObject objA = objectPlacer.placedGameObjects[index].transform.GetChild(0).gameObject;
+        GameObject objA = objectPlacer.placedGameObjects[index].transform.gameObject;
         // 如果目标对象 A 为空，输出错误日志并返回
         if (objA == null)
         {
@@ -150,7 +150,7 @@ public class SelectObject : MonoBehaviour
         foreach (Transform child in objA.transform)
         {
             // 如果子对象的名称与主对象相同
-            if (child.gameObject.name == objA.name)
+            if (child.gameObject.name + "(Clone)" == objA.name) 
             {
                 // 获取子对象的渲染器组件
                 Renderer childRenderer = child.GetComponent<Renderer>();
