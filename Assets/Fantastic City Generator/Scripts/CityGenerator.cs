@@ -4,6 +4,7 @@ using System.Collections.Generic;
 //using System;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 
 namespace FCG
 {
@@ -954,10 +955,13 @@ namespace FCG
             Debug.Log(nB + " buildings were created");
 
             // 销毁临时的 GameObject
-            DestroyImmediate(pB);
+            if (pB != null && PrefabUtility.IsPartOfPrefabInstance(pB))
+            {
+                DestroyImmediate(pB, true);
+            }
 
-            // 查找场景中的 DayNight 组件
-            DayNight dayNight = FindObjectOfType<DayNight>();
+                // 查找场景中的 DayNight 组件
+                DayNight dayNight = FindObjectOfType<DayNight>();
             // 如果找到了 DayNight 组件
             if (dayNight)
             {
