@@ -954,14 +954,19 @@ namespace FCG
             // 输出创建的建筑物数量到控制台
             Debug.Log(nB + " buildings were created");
 
+            //// 销毁临时的 GameObject（原代码）
+            //if (pB != null && PrefabUtility.IsPartOfPrefabInstance(pB))
+            //{
+            //    DestroyImmediate(pB, true);
+            //}
             // 销毁临时的 GameObject
-            if (pB != null && PrefabUtility.IsPartOfPrefabInstance(pB))
+            if (pB != null)
             {
                 DestroyImmediate(pB, true);
             }
 
-                // 查找场景中的 DayNight 组件
-                DayNight dayNight = FindObjectOfType<DayNight>();
+            // 查找场景中的 DayNight 组件
+            DayNight dayNight = FindObjectOfType<DayNight>();
             // 如果找到了 DayNight 组件
             if (dayNight)
             {
