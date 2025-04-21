@@ -10,6 +10,7 @@ public class HidePanel : MonoBehaviour
     private GameObject targetGameObject;
     private GameObject gameObjectPanelCreate;
     private GameObject gameObjectPanelSiteSelection;
+    private GameObject gameObjectPanelText;
     private List<GameObject> gameObjectPanelList = new List<GameObject>();
     // 在脚本实例被启用时调用，进行初始化操作
     private void Start()
@@ -18,8 +19,10 @@ public class HidePanel : MonoBehaviour
         targetGameObject = GameObject.Find("Player");
         gameObjectPanelCreate = GameObject.Find("panel_create");
         gameObjectPanelCreate.SetActive(false);
+        gameObjectPanelText = GameObject.Find("panel_text");
+        gameObjectPanelText.SetActive(false);
         gameObjectPanelSiteSelection = GameObject.Find("panel_site_selection");
-        gameObjectPanelSiteSelection.SetActive(false);  
+        gameObjectPanelSiteSelection.SetActive(false);
         gameObjectPanelList.Add(gameObjectPanelCreate);
         gameObjectPanelList.Add(gameObjectPanelSiteSelection);
         if (targetGameObject != null)
@@ -69,5 +72,9 @@ public class HidePanel : MonoBehaviour
                 }
             }
         }
+    }
+    public void showPanelText()
+    {
+        gameObjectPanelText.SetActive(true);
     }
 }
