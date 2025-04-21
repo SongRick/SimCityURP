@@ -15,7 +15,7 @@ namespace SimCity.FinalController
         public bool CursorLockToggleOn { get; private set; } = false;
         public bool lastCursorLockToggleOn { get; private set; } = false;
         public bool EditModeToggleOn { get; private set; } = false;
-        public bool DebugModeToggleOn { get; private set; } = true;
+        public bool DebugModeToggleOn { get; private set; } = false;
         public bool ConsoleModeToggleOn { get; private set; } = false;
 
         private PlacementSystem placementSystem;
