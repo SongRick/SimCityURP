@@ -11,7 +11,7 @@ public class BuildingSpawnerTest : MonoBehaviour
     public GameObject parentObject;
     int buildingSize = 40;
 
-    public void buildingSpawner(int size)
+    public string buildingSpawner(int size)
     {
         // 计算建筑群基准点（左上角）的坐标
         Vector3 worldPosition = new Vector3(buildingSize * size / 2, 0, -buildingSize * size / 2);
@@ -23,5 +23,7 @@ public class BuildingSpawnerTest : MonoBehaviour
                 objectPlacer.PlaceObject(prefab, newPosition, "category", parentObject);
             }
         }
+        string strSpawnBuildings = $"{size}*{size} buildings have been spawned";
+        return strSpawnBuildings;
     }
 }

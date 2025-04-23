@@ -68,9 +68,10 @@ namespace SimCity.FinalController
         public static ConsoleCommand REMOVE;
         public static ConsoleCommand<float> SET_HEIGHT;
         public static ConsoleCommand COUNT_TYPES;
-        public static ConsoleCommand COMMAND2;
+        public static ConsoleCommand<int> SPAWN_BUILDINGS;
 
         public SelectObject selectObject;
+        public BuildingSpawnerTest buildingSpawnerTest;
 
 
         public List<object> commandList;
@@ -83,6 +84,12 @@ namespace SimCity.FinalController
             if (selectObject == null)
             {
                 Debug.LogError("未找到SelectObject组件！");
+            }
+            // 初始化buildingSpawnerTest
+            buildingSpawnerTest = FindObjectOfType<BuildingSpawnerTest>();
+            if (buildingSpawnerTest == null)
+            {
+                Debug.LogError("未找到buildingSpawnerTest组件！");
             }
             HELP = new ConsoleCommand("help", "shows a list of commands", "help", () =>
             {
@@ -109,9 +116,9 @@ namespace SimCity.FinalController
             {
                 printContent = $"{input}\n{selectObject.countBuildingTypes()}";
             });
-            COMMAND2 = new ConsoleCommand("command2", "command2", "command2", () =>
+            SPAWN_BUILDINGS = new ConsoleCommand<int>("spawnbuildings", "spawn x*x buildings", "spawnbuildings <x>", (x) =>
             {
-
+                printContent = $"{input}\n{buildingSpawnerTest.buildingSpawner(x)}";
             });
             commandList = new List<object>
             {
@@ -120,7 +127,7 @@ namespace SimCity.FinalController
                 REMOVE,
                 SET_HEIGHT,
                 COUNT_TYPES,
-                COMMAND2
+                SPAWN_BUILDINGS,
             };
 
 
@@ -218,6 +225,17 @@ namespace SimCity.FinalController
                         if (properties.Length > 1)
                         {
                             (commandList[i] as ConsoleCommand<float>).Invoke(float.Parse(properties[1]));
+                        }
+                        else
+                        {
+                            Debug.Log("The syntax of the command is incorrect, please try again!");
+                        }
+                    }
+                    else if (commandList[i] as ConsoleCommand<int> != null)
+                    {
+                        if (properties.Length > 1)
+                        {
+                            (commandList[i] as ConsoleCommand<int>).Invoke(int.Parse(properties[1]));
                         }
                         else
                         {

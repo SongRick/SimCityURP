@@ -1550,6 +1550,7 @@ MonoBehaviour:
   gravity: 25
   jumpSpeed: 10
   verticalFlightSpeed: 10
+  sprintMultiplier: 10
   lookSenseH: 0.1
   lookSenseV: 0.1
   lookLimitV: 89
@@ -1657,6 +1658,7 @@ MonoBehaviour:
   printContent: 
   scrollPosition: {x: 0, y: 0}
   selectObject: {fileID: 0}
+  buildingSpawnerTest: {fileID: 0}
 --- !u!1 &889135847
 GameObject:
   m_ObjectHideFlags: 0

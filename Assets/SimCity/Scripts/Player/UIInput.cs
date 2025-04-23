@@ -165,7 +165,7 @@ namespace SimCity.FinalController
         {
             if (context.performed)
             {
-                Debug.Log("OnReturn");
+                //Debug.Log("OnReturn");
                 if (ConsoleModeToggleOn)
                 {
                     consoleConcroller.HandleInput();
