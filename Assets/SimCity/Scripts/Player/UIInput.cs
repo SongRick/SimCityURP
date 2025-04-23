@@ -19,9 +19,9 @@ namespace SimCity.FinalController
         public bool ConsoleModeToggleOn { get; private set; } = false;
 
         private PlacementSystem placementSystem;
-        private HidePanel scrpUI;
+        private UIPanelVisibilityController scrpUI;
         private InputManager inputManager; // 新增InputManager引用
-        private ConsoleConcroller consoleConcroller;// 新增ConsoleConcroller引用
+        private ConsoleController consoleConcroller;// 新增ConsoleConcroller引用
         private SelectObject selectObject;// 新增SelectObject引用
         #endregion
 
@@ -34,7 +34,7 @@ namespace SimCity.FinalController
             {
                 Debug.LogError("未找到InputManager组件！");
             }
-            consoleConcroller = FindObjectOfType<ConsoleConcroller>();
+            consoleConcroller = FindObjectOfType<ConsoleController>();
             if (consoleConcroller == null)
             {
                 Debug.LogError("未找到ConsoleConcroller组件！");
@@ -56,7 +56,7 @@ namespace SimCity.FinalController
                 Debug.LogError("未找到PlacementSystem组件！");
             }
 
-            scrpUI = FindObjectOfType<HidePanel>();
+            scrpUI = FindObjectOfType<UIPanelVisibilityController>();
             if (scrpUI == null)
             {
                 Debug.LogError("未找到scrpUI组件！");

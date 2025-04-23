@@ -52,8 +52,8 @@ namespace SimCity.FinalController
         }
     }
     #endregion
-    #region ConsoleConcroller
-    public class ConsoleConcroller : MonoBehaviour
+    #region ConsoleController
+    public class ConsoleController : MonoBehaviour
     {
         public static bool showConsole;//显示控制台
         private bool showHelp;//显示帮助

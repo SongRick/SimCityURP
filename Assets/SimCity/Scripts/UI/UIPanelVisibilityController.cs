@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class HidePanel : MonoBehaviour
+public class UIPanelVisibilityController : MonoBehaviour
 {
     private UIInput _UIInput; 
     private GameObject targetGameObject;
