@@ -32,6 +32,8 @@ namespace SimCity.FinalController
         public float jumpSpeed = 10f;
         // 上升和下降的速度
         public float verticalFlightSpeed = 10f;
+        // 冲刺加速倍率
+        public int sprintMultiplier = 10;
 
         // 在 Inspector 面板中创建一个名为 "Camera Settings" 的标题，用于组织下面的相机设置参数
         [Header("Camera Settings")]
@@ -117,7 +119,7 @@ namespace SimCity.FinalController
             // 限制新水平速度的大小
             if (_playerLocomotionInput.SprintToggledOn)
                 // 如果开启冲刺模式，将水平速度限制在最大速度的两倍
-                newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, 2 * runSpeed);
+                newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, sprintMultiplier * runSpeed);
             else
                 // 如果未开启冲刺模式，将水平速度限制在正常最大速度
                 newHorizontalVelocity = Vector3.ClampMagnitude(newHorizontalVelocity, runSpeed);
@@ -136,7 +138,7 @@ namespace SimCity.FinalController
                 // 如果开启冲刺模式，垂直速度加倍
                 if (_playerLocomotionInput.SprintToggledOn)
                 {
-                    _verticalVelocity = baseVerticalSpeed * 2;
+                    _verticalVelocity = baseVerticalSpeed * sprintMultiplier;
                 }
                 else
                 {
