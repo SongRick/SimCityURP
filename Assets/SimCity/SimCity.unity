@@ -2269,6 +2269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1091111406}
   - component: {fileID: 1091111407}
+  - component: {fileID: 1091111408}
   m_Layer: 0
   m_Name: Buildings
   m_TagString: Untagged
@@ -2306,6 +2307,20 @@ MonoBehaviour:
   prefab: {fileID: 1663274754961064, guid: 90687a941906c1d47a679d731758a0bf, type: 3}
   objectPlacer: {fileID: 153137163}
   parentObject: {fileID: 1091111405}
+--- !u!114 &1091111408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091111405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f0579d92d49df4ab3c027ac06544f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildings: {fileID: 1091111406}
+  canvas: {fileID: 642916402}
 --- !u!1 &1138830903
 GameObject:
   m_ObjectHideFlags: 0
