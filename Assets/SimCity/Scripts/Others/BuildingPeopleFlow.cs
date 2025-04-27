@@ -120,7 +120,7 @@ public class BuildingPeopleFlow : MonoBehaviour
                 // 获取建筑的位置
                 Vector3 buildingPosition = building.position;
                 // 计算文本应该显示的位置，位于建筑顶部上方 5 个单位的位置，并将其转换为屏幕坐标
-                Vector3 textPosition = Camera.main.WorldToScreenPoint(buildingPosition + new Vector3(0, bounds.size.y + 5, 0));
+                Vector3 textPosition = Camera.main.WorldToScreenPoint(buildingPosition + new Vector3(0, bounds.size.y + 5, -bounds.size.z / 2));
                 // 获取文本对象的 RectTransform 组件
                 RectTransform rectTransform = textObjects[index].GetComponent<RectTransform>();
                 // 将文本对象的位置设置为计算得到的位置
