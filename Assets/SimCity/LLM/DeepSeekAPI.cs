@@ -10,11 +10,8 @@ using Unity.VisualScripting.FullSerializer;
 public class DeepSeekAPI : MonoBehaviour
 {
     [Header("API Settings")]
-    [SerializeField]
     private string apiKey = "sk-50b19a4873f447d5ba0e50c11a836765";
-    [SerializeField]
     private string modelName = "deepseek-chat";// 使用的模型名称
-    [SerializeField]
     private string apiUrl = "https://api.deepseek.com/v1/chat/completions";
     //private string apiUrl = "https://api.siliconflow.cn/v1/chat/completions";
 
@@ -37,7 +34,7 @@ public class DeepSeekAPI : MonoBehaviour
     void Start()
     {
         // 调用 SendMessageToDeepSeek 方法，发送消息 "你好啊"，不使用回调函数
-        SendMessageToDeepSeek("你好啊", null);
+        //SendMessageToDeepSeek("你好啊", null);
     }
 
     /// <summary>
