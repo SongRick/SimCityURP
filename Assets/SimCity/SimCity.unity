@@ -122,6 +122,58 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &62970095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 62970097}
+  - component: {fileID: 62970096}
+  m_Layer: 0
+  m_Name: DeepSeekAPI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &62970096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62970095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40ac87a0f2395bc48acec84d4b79282c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiKey: sk-50b19a4873f447d5ba0e50c11a836765
+  modelName: deepseek-chat
+  apiUrl: https://api.deepseek.com/v1/chat/completions
+  temperature: 0.5
+  maxTokens: 100
+  npcCharacter:
+    name: "Unity-\u52A9\u624B"
+    personalityPrompt: "\u4F60\u662FUnity-\u52A9\u624B\uFF0C\u64C5\u957FUnity\u548CC#\u7F16\u7A0B\u77E5\u8BC6\u3002"
+--- !u!4 &62970097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62970095}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 37.613457, y: 6.5413475, z: 24.120861}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &123161691
 GameObject:
   m_ObjectHideFlags: 0
@@ -4790,7 +4842,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2026286047}
-  - component: {fileID: 2026286046}
   m_Layer: 0
   m_Name: DeepSeekAPI_Sample
   m_TagString: Untagged
@@ -4798,18 +4849,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2026286046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026286045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5275f47ad92d2d14eaf0625125c4b204, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2026286047
 Transform:
   m_ObjectHideFlags: 0
@@ -5443,3 +5482,4 @@ SceneRoots:
   - {fileID: 1357645336}
   - {fileID: 1091111406}
   - {fileID: 2026286047}
+  - {fileID: 62970097}
