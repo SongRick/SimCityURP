@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using Newtonsoft.Json;
 using UnityEngine.Networking;
 using Unity.VisualScripting.FullSerializer;
+using System.Text.RegularExpressions;
 
 // Unity 脚本，用于向 DeepSeek API 发送聊天请求
 public class DeepSeekAPI : MonoBehaviour
@@ -34,11 +35,7 @@ public class DeepSeekAPI : MonoBehaviour
         public string name = "城市建筑规划专家";
         // 角色设定提示词，用于向模型描述 NPC 的角色特点
         [TextArea(3, 10)]
-        public string personalityPrompt = "现有3*3区域，从左上到右下依次编号为0-8；" +
-            "现有6种建筑类型（生活、工作、商业、医疗、教育、娱乐），编号依次为0-5；" +
-            "用户将提供给你城市规划的要求，请你分析并给出每块区域合理的建筑类型，" +
-            "以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：" +
-            "\r\n{\r\n\t\"区域编号\":<区域编号>,\r\n\t\"建筑类型\":<建筑类型编号>\r\n}";
+        public string personalityPrompt = "现有3*3区域，从左上到右下依次编号为0-8；现有6种建筑类型（生活、工作、商业、医疗、教育、娱乐），编号依次为0-5；用户将提供给你城市规划的要求，请你分析并给出每块区域合理的建筑类型，不要给多余的回复，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：\r\n{\r\n\t\"areaID\":<区域编号>,\r\n\t\"buildingTypeID\":<建筑类型编号>\r\n}";
     }
     // 序列化字段，用于在 Unity 编辑器中显示和设置 NPC 角色信息
     [SerializeField]
@@ -147,6 +144,8 @@ public class DeepSeekAPI : MonoBehaviour
             string npcReply = response.choices[0].message.content;
             // 打印 NPC 的回复内容
             Debug.Log(npcReply);
+            // 调用解析方法
+            ParseNpcReply(npcReply);
             // 调用回调函数，通知请求成功并传递回复内容
             callback?.Invoke(npcReply, true);
         }
@@ -159,6 +158,68 @@ public class DeepSeekAPI : MonoBehaviour
         request.Dispose();
         // 结束当前协程
         yield break;
+    }
+    // 定义一个类来表示 JSON 中的每个对象
+    public class BuildingInfo
+    {
+        public int areaID;
+        public int buildingTypeID;
+    }
+    // 解析 npcReply 的方法
+    // 解析 npcReply 的方法
+    // 解析 npcReply 的方法
+    // 解析 npcReply 的方法
+    public void ParseNpcReply(string npcReply)
+    {
+        // 打印原始的 npcReply 内容，方便调试
+        Debug.Log($"原始 npcReply 内容: {npcReply}");
+
+        // 移除前后的空白字符
+        npcReply = npcReply.Trim();
+
+        // 移除 Markdown 代码块标识
+        if (npcReply.StartsWith("```json"))
+        {
+            npcReply = npcReply.Substring(9).TrimStart(); // 移除 ```json 并去除前导空格
+        }
+        if (npcReply.EndsWith("```"))
+        {
+            npcReply = npcReply.Substring(0, npcReply.Length - 3).TrimEnd(); // 移除 ``` 并去除尾随空格
+        }
+
+        // 确保 JSON 以数组开头和结尾
+        if (!npcReply.StartsWith("["))
+        {
+            npcReply = "[" + npcReply;
+        }
+        if (!npcReply.EndsWith("]"))
+        {
+            npcReply = npcReply + "]";
+        }
+
+        // 打印清理后的 npcReply 内容，方便调试
+        Debug.Log($"清理后的 npcReply 内容: {npcReply}");
+
+        try
+        {
+            // 反序列化 JSON 字符串为 BuildingInfo 列表
+            List<BuildingInfo> buildingInfos = JsonConvert.DeserializeObject<List<BuildingInfo>>(npcReply);
+
+            // 遍历列表，获取每个区域的编号和建筑类型编号
+            foreach (BuildingInfo info in buildingInfos)
+            {
+                int areaNumber = info.areaID;
+                int buildingType = info.buildingTypeID;
+
+                // 打印获取到的信息
+                Debug.Log($"区域编号: {areaNumber}, 建筑类型编号: {buildingType}");
+            }
+        }
+        catch (JsonException e)
+        {
+            // 处理 JSON 解析错误
+            Debug.LogError($"JSON 解析错误: {e.Message}");
+        }
     }
 
     /// <summary>
