@@ -86,6 +86,9 @@ namespace SimCity.FinalController
         // 每帧调用一次，用于处理玩家的移动逻辑
         private void Update()
         {
+            // 如果处于编辑模式，则不处理移动逻辑,因展示llm相关故增加该判断
+            if (_UIInput.EditModeToggleOn)
+                return;
             HandleMovement();
         }
 

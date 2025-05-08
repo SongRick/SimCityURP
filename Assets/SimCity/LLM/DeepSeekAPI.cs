@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 // Unity 脚本，用于向 DeepSeek API 发送聊天请求
 public class DeepSeekAPI : MonoBehaviour
 {
+    public BuildingSpawnerJson buildingSpawnerJson;
     [Header("API Settings")]
     // DeepSeek API 的密钥，用于身份验证
     private string apiKey = "sk-50b19a4873f447d5ba0e50c11a836765";
@@ -162,12 +163,10 @@ public class DeepSeekAPI : MonoBehaviour
     // 定义一个类来表示 JSON 中的每个对象
     public class BuildingInfo
     {
-        public int areaID;
-        public int buildingTypeID;
+        public int row;
+        public int column;
+        public int buildingType;
     }
-    // 解析 npcReply 的方法
-    // 解析 npcReply 的方法
-    // 解析 npcReply 的方法
     // 解析 npcReply 的方法
     public void ParseNpcReply(string npcReply)
     {
@@ -204,15 +203,17 @@ public class DeepSeekAPI : MonoBehaviour
         {
             // 反序列化 JSON 字符串为 BuildingInfo 列表
             List<BuildingInfo> buildingInfos = JsonConvert.DeserializeObject<List<BuildingInfo>>(npcReply);
-
-            // 遍历列表，获取每个区域的编号和建筑类型编号
+            // 移除所有建筑
+            buildingSpawnerJson.RemoveAllBuildings();
+            // 遍历列表，获取每个区域的行、列和建筑类型
             foreach (BuildingInfo info in buildingInfos)
             {
-                int areaNumber = info.areaID;
-                int buildingType = info.buildingTypeID;
-
+                int row = info.row;
+                int column = info.column;
+                int buildingType = info.buildingType;
                 // 打印获取到的信息
-                Debug.Log($"区域编号: {areaNumber}, 建筑类型编号: {buildingType}");
+                Debug.Log($"Row: {row}, Column: {column}, Building Type: {buildingType}");
+                buildingSpawnerJson.SpawnBuilding(row, column, buildingType);
             }
         }
         catch (JsonException e)

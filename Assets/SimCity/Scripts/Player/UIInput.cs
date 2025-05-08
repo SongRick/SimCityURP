@@ -59,7 +59,7 @@ namespace SimCity.FinalController
             scrpUI = FindObjectOfType<UIPanelVisibilityController>();
             if (scrpUI == null)
             {
-                Debug.LogError("未找到scrpUI组件！");
+                //Debug.LogError("未找到scrpUI组件！");// 暂时注释掉，仅展示llm相关
             }
         }
 
@@ -89,7 +89,7 @@ namespace SimCity.FinalController
 
                 if (placementSystem != null)
                 {
-                    placementSystem.updateEditMode();
+                    //placementSystem.updateEditMode();//因llm暂时注释掉
                 }
                 else
                 {
@@ -98,11 +98,11 @@ namespace SimCity.FinalController
 
                 if (scrpUI != null)
                 {
-                    scrpUI.updateEditMode(EditModeToggleOn);
+                    //scrpUI.updateEditMode(EditModeToggleOn);//因llm暂时注释掉
                 }
                 else
                 {
-                    Debug.LogError("scrpUI为null，无法调用updateEditMode方法！");
+                    //Debug.LogError("scrpUI为null，无法调用updateEditMode方法！");//因llm暂时注释掉
                 }
             }
         }
