@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.syomus.proceduraltoolkit": "https://github.com/Syomus/ProceduralToolkit.git#upm",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.connect.share": "4.2.3",
     "com.unity.ide.rider": "3.0.34",

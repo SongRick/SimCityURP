@@ -36,7 +36,12 @@ public class DeepSeekAPI : MonoBehaviour
         public string name = "城市建筑规划专家";
         // 角色设定提示词，用于向模型描述 NPC 的角色特点
         [TextArea(3, 10)]
-        public string personalityPrompt = "现有3*3区域，从左上到右下依次编号为0-8；现有6种建筑类型（生活、工作、商业、医疗、教育、娱乐），编号依次为0-5；用户将提供给你城市规划的要求，请你分析并给出每块区域合理的建筑类型，不要给多余的回复，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：\r\n{\r\n\t\"areaID\":<区域编号>,\r\n\t\"buildingTypeID\":<建筑类型编号>\r\n}";
+        public string personalityPrompt = "现有5*5区域，左上角为第1行第1列；" +
+            "现有6种建筑类型（生活、工作、商业、医疗、教育、娱乐），编号依次为0-5；" +
+            "用户将提供给你城市规划的要求，请你分析并给出每块区域合理的建筑类型，" +
+            "不要给多余的回复，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：" +
+            "\r\n{\r\n\t\"row\":<行编号>,\r\n\t\"column\":<列编号>,\r\n\t\"buildingType\":<建筑类型编号>\r\n}";
+
     }
     // 序列化字段，用于在 Unity 编辑器中显示和设置 NPC 角色信息
     [SerializeField]
